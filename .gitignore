@@ -1,0 +1,15 @@
+# Node modules (οπουδήποτε στο project)
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Build folders
+dist/
+build/
