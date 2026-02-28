@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Profile</title>
+  <link rel="stylesheet" href="patient.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__container">
+
+      <div class="logo">
+        <span class="logo__mark">+</span>
+        <span class="logo__text">MedResearch</span>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html">Dashboard</a>
+        <a href="patient.html">Patients</a>
+      </nav>
+
+      <div class="profile">
+        <button id="profileBtn" class="profile__btn">👤</button>
+
+        <div id="profileDropdown" class="profile__dropdown">
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+<main class="centerPage">
+
+  <div class="centerCard">
+    <h2 id="patientName">Patient</h2>
+    <p class="muted" id="patientId"></p>
+
+    <div class="centerActions">
+      <button class="btn">Ιστορικό</button>
+      <button class="btn btn--primary">Συνέχεια</button>
+    </div>
+  </div>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

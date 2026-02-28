@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Project - Dashboard</title>
-    <link rel="stylesheet" href="../src/assets/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medical Research App</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-    <nav class="navbar">
-        <div class="logo">MedicalApp</div>
-        <ul class="nav-links">
-            <li><a href="#dashboard" class="active">Dashboard</a></li>
-            <li><a href="#patients">Patients</a></li>
-        </ul>
-    </nav>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar__container">
 
-    <main class="content">
-        <h1>Καλωσήρθατε στο Dashboard</h1>
-        <p>Εδώ θα εμφανίζονται τα συγκεντρωτικά στοιχεία σύντομα.</p>
-    </main>
+      <div class="logo">
+        <span class="logo__mark">+</span>
+        <span class="logo__text">MedResearch</span>
+      </div>
 
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="patient.html">Patients</a>
+      </nav>
+
+      <div class="profile">
+        <button id="profileBtn" class="profile__btn">👤</button>
+
+        <div id="profileDropdown" class="profile__dropdown">
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content (θα γεμίζει δυναμικά από modules) -->
+  <main id="app">
+    <div class="placeholder-card">
+  <h2>Welcome to MedResearch</h2>
+  <p>Select Dashboard or Patients from the navigation.</p>
+</div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
