@@ -1,0 +1,98 @@
+/* ===============================
+   Patient Page Specific Styles
+================================ */
+
+.centerPage {
+  min-height: calc(100vh - 65px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.centerCard {
+  width: 100%;
+  max-width: 520px;
+  background: white;
+  border-radius: 18px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  position: relative;
+}
+
+/* Decorative medical accent */
+.centerCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(90deg, #2563eb, #14b8a6);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+
+.centerCard h2 {
+  margin-bottom: 6px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.centerCard .muted {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 30px;
+}
+
+/* Action Buttons */
+.centerActions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, #2563eb, #14b8a6);
+  border: none;
+  color: white;
+}
+
+.btn--primary:hover {
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+}
+
+/* Back button */
+.linkBtn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.linkBtn:hover {
+  opacity: 0.7;
+}

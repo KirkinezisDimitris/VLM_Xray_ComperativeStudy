@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Medical Research App</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Patient Profile</title>
+  <link rel="stylesheet" href="patient.css" />
+<link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-  <!-- Navbar -->
   <header class="navbar">
     <div class="navbar__container">
 
@@ -19,7 +18,7 @@
       </div>
 
       <nav class="nav">
-        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html">Dashboard</a>
         <a href="patient.html">Patients</a>
       </nav>
 
@@ -34,14 +33,20 @@
     </div>
   </header>
 
-  <!-- Main Content (θα γεμίζει δυναμικά από modules) -->
-  <main id="app">
-    <div class="placeholder-card">
-  <h2>Welcome to MedResearch</h2>
-  <p>Select Dashboard or Patients from the navigation.</p>
-</div>
-  </main>
+<main class="centerPage">
 
-  <script src="script.js"></script>
+  <div class="centerCard">
+    <h2 id="patientName">Patient</h2>
+    <p class="muted" id="patientId"></p>
+
+    <div class="centerActions">
+      <button class="btn">Ιστορικό</button>
+      <button class="btn btn--primary">Συνέχεια</button>
+    </div>
+  </div>
+
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
