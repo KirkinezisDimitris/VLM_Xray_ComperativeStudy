@@ -1,10 +1,13 @@
+import historyRoutes from "./routes/history.routes.js";
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { db } from "./db.js";
 
+
 const app = express();
 app.use(express.json());
+app.use("/api", historyRoutes);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -206,4 +209,63 @@ app.get("/", (req, res) => {
 
 app.listen(3001, () => {
   console.log("Server running on http://localhost:3001");
+});
+
+// GET /api/history?userId=1
+// returns patients with queue_pos < current_pos (already visited)
+app.get("/api/history", async (req, res) => {
+  const userId = Number(req.query.userId);
+  if (!Number.isFinite(userId)) return res.status(400).json({ error: "userId required" });
+
+  await ensureQueue(userId);
+
+  const [[progress]] = await db.query(
+    "SELECT current_pos FROM user_progress WHERE user_id=?",
+    [userId]
+  );
+
+  const [rows] = await db.query(
+    `
+    SELECT q.queue_pos, p.id AS patient_id
+    FROM user_patient_queue q
+    JOIN patients p ON p.id = q.patient_id
+    WHERE q.user_id = ? AND q.queue_pos < ?
+    ORDER BY q.queue_pos DESC
+    `,
+    [userId, progress.current_pos]
+  );
+
+  res.json({
+    current_pos: progress.current_pos,
+    patients: rows.map(r => ({
+      patient_id: r.patient_id,
+      queue_pos: r.queue_pos
+    }))
+  });
+});
+
+// POST /api/goto?userId=1
+// body: { queue_pos: number }
+app.post("/api/goto", async (req, res) => {
+  const userId = Number(req.query.userId);
+  const queuePos = Number(req.body?.queue_pos);
+
+  if (!Number.isFinite(userId)) return res.status(400).json({ error: "userId required" });
+  if (!Number.isFinite(queuePos) || queuePos < 0) return res.status(400).json({ error: "queue_pos required" });
+
+  await ensureQueue(userId);
+
+  // validate exists
+  const [rows] = await db.query(
+    "SELECT 1 FROM user_patient_queue WHERE user_id=? AND queue_pos=? LIMIT 1",
+    [userId, queuePos]
+  );
+  if (!rows.length) return res.status(404).json({ error: "queue_pos not found" });
+
+  await db.query(
+    "UPDATE user_progress SET current_pos=? WHERE user_id=?",
+    [queuePos, userId]
+  );
+
+  res.json({ ok: true });
 });
