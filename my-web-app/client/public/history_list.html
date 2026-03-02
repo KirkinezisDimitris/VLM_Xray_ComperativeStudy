@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>History</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="history_list.css" />
+</head>
+<body>
+
+<header class="navbar">
+  <div class="navbar__container">
+    <div class="logo">
+      <span class="logo__mark">+</span>
+      <span>MedResearch</span>
+    </div>
+    <nav class="nav">
+      <a href="index.html">Dashboard</a>
+      <a href="patients.html">Patients</a>
+    </nav>
+  </div>
+</header>
+
+<main class="pageContainer">
+  <div class="card">
+    <div class="row">
+      <div>
+        <h2>History</h2>
+        <p class="muted" id="subText">Loading…</p>
+      </div>
+      <button class="btn" id="backBtn" type="button">← Back</button>
+    </div>
+
+    <div id="list" class="historyList"></div>
+  </div>
+</main>
+
+<script src="history_list.js"></script>
+</body>
+</html>
