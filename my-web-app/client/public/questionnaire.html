@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Questionnaire</title>
+<link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="questionnaire.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__container">
+
+      <div class="logo">
+        <span class="logo__mark">+</span>
+        <span class="logo__text">MedResearch</span>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html">Dashboard</a>
+        <a href="patient.html">Patients</a>
+      </nav>
+
+      <div class="profile">
+        <button id="profileBtn" class="profile__btn">👤</button>
+
+        <div id="profileDropdown" class="profile__dropdown">
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+<main class="pageContainer">
+    
+  <div class="qWrap">
+    <div class="qHeader">
+      <div>
+        <h2 id="patientTitle">Patient</h2>
+        <p class="muted" id="progressText"></p>
+      </div>
+
+      <div class="qHeader__actions">
+        <button class="btn" id="saveBtn" type="button">Save</button>
+        <button class="btn btn--primary" id="nextBtn" type="button">Next Patient</button>
+      </div>
+    </div>
+
+    <div class="imagesRow">
+      <div class="imgCard">
+        <img id="img1" alt="Patient image 1" />
+      </div>
+      <div class="imgCard">
+        <img id="img2" alt="Patient image 2" />
+      </div>
+    </div>
+
+    <form id="form" class="formCard"></form>
+  </div>
+</main>
+<!-- Image Zoom Modal -->
+<div id="imgModal" class="imgModal" aria-hidden="true">
+  <button id="imgModalClose" class="imgModal__close" type="button" aria-label="Close">✕</button>
+  <img id="imgModalContent" class="imgModal__img" alt="Zoomed image" />
+</div>
+<script src="questionnaire.js"></script>
+</body>
+</html>
