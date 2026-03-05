@@ -3,12 +3,13 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { db } from "./db.js";
+import authRoutes from "./routes/auth.routes.js";
 
 
 const app = express();
 app.use(express.json());
 app.use("/api", historyRoutes);
-
+app.use("/api", authRoutes);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const XRAY_DIR = path.join(__dirname, "../../../Final Xray Collection");

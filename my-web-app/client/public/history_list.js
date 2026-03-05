@@ -1,4 +1,10 @@
-const USER_ID = 2; // προσωρινά (account.id)
+const LS_USER = "mr_user";
+const user = JSON.parse(localStorage.getItem(LS_USER) || "null");
+
+if (!user) {
+  window.location.href = "/login.html";
+}
+const USER_ID = user.id;
 
 async function getJSON(url) {
   const res = await fetch(url);

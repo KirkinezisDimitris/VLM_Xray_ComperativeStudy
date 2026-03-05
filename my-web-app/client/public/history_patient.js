@@ -1,4 +1,10 @@
-const USER_ID = 1;
+const LS_USER = "mr_user";
+const user = JSON.parse(localStorage.getItem(LS_USER) || "null");
+
+if (!user) {
+  window.location.href = "/login.html";
+}
+const USER_ID = user.id;
 
 const ANSWERS = [
   { label: "POSITIVE", value: 1 },

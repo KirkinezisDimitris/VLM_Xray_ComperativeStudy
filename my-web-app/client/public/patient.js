@@ -1,3 +1,10 @@
+const user = JSON.parse(localStorage.getItem("mr_user") || "null");
+
+if (!user) {
+  window.location.href = "/login.html";
+}
+
+const USER_ID = user.id;
 document.getElementById("continueBtn").addEventListener("click", () => {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
