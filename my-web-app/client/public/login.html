@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+
+<main class="loginWrap">
+  <div class="loginCard">
+    <div class="loginBrand">
+      <div class="logoMark">+</div>
+      <div>
+        <h1>MedResearch</h1>
+        <p class="muted">Doctor Portal</p>
+      </div>
+    </div>
+
+    <form id="loginForm" class="loginForm" autocomplete="on">
+      <label class="field">
+        <span class="field__label">Username</span>
+        <input id="username" name="username" type="text" required />
+      </label>
+
+      <label class="field">
+        <span class="field__label">Password</span>
+        <input id="password" name="password" type="password" required />
+      </label>
+
+      <button class="btn btn--primary" type="submit">Login</button>
+
+      <p id="error" class="errorText" aria-live="polite"></p>
+    </form>
+  </div>
+</main>
+
+<script src="login.js"></script>
+</body>
+</html>

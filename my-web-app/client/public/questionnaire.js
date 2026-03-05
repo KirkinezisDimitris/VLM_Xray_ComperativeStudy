@@ -1,3 +1,4 @@
+
 function setupImageZoom() {
   const modal = document.getElementById("imgModal");
   const modalImg = document.getElementById("imgModalContent");
@@ -38,7 +39,14 @@ function setupImageZoom() {
   });
 }
 
-const USER_ID = 2; // προσωρινά (βάλε εδώ το account.id όταν κάνεις login)
+const LS_USER = "mr_user";
+const user = JSON.parse(localStorage.getItem("mr_user") || "null");
+
+if (!user) {
+  window.location.href = "/login.html";
+}
+
+const USER_ID = user.id;
 
 const ANSWERS = [
   { label: "POSITIVE", value: 1 },

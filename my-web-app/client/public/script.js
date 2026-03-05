@@ -38,7 +38,10 @@ if (patientId && patients[patientId]) {
 
 const profileBtn = document.getElementById("profileBtn");
 const profileDropdown = document.getElementById("profileDropdown");
-const logoutBtn = document.getElementById("logoutBtn");
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
+  localStorage.removeItem("mr_user");
+  window.location.href = "/login.html";
+});
 
 profileBtn?.addEventListener("click", () => {
   profileDropdown.classList.toggle("active");
