@@ -153,8 +153,8 @@ app.get("/api/patients/:id/questionnaire", async (req, res) => {
     patient: {
       id: rows[0].patient_id,
       patient_code: rows[0].patient_code,
-      image1_path: rows[0].image1_path,
-      image2_path: rows[0].image2_path,
+      image1_path: `/xray/${rows[0].image1_path}`,
+      image2_path: `/xray/${rows[0].image2_path}`,
     },
     findings: rows.map(r => ({
       finding_id: r.finding_id,
