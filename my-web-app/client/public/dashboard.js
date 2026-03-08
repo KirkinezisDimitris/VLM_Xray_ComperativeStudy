@@ -1,6 +1,5 @@
-const user = JSON.parse(localStorage.getItem("mr_user") || "null");
-if (!user) window.location.href = "/login.html";
-
+const user = Auth.requireAuth();
+if (!user) throw new Error("Unauthorized");
 const USER_ID = user.id;
 
 // patient id που θέλουμε να δούμε

@@ -1,4 +1,6 @@
-
+const user = Auth.requireAuth();
+if (!user) throw new Error("Unauthorized");
+const USER_ID = user.id;
 function setupImageZoom() {
   const modal = document.getElementById("imgModal");
   const modalImg = document.getElementById("imgModalContent");
@@ -40,13 +42,7 @@ function setupImageZoom() {
 }
 
 const LS_USER = "mr_user";
-const user = JSON.parse(localStorage.getItem("mr_user") || "null");
 
-if (!user) {
-  window.location.href = "/login.html";
-}
-
-const USER_ID = user.id;
 
 const ANSWERS = [
   { label: "POSITIVE", value: 1 },
@@ -159,3 +155,7 @@ function collectAnswers(findings) {
     window.location.reload();
   });
 })();
+
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
+  Auth.logout();
+});
