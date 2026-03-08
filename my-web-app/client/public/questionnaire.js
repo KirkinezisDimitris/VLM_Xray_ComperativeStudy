@@ -1,6 +1,5 @@
 const user = Auth.requireAuth();
 if (!user) throw new Error("Unauthorized");
-Auth.setupProfileMenu();
 const USER_ID = user.id;
 function setupImageZoom() {
   const modal = document.getElementById("imgModal");
