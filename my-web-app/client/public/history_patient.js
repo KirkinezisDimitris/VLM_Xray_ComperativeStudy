@@ -1,11 +1,7 @@
 const LS_USER = "mr_user";
-const user = JSON.parse(localStorage.getItem(LS_USER) || "null");
-
-if (!user) {
-  window.location.href = "/login.html";
-}
+const user = Auth.requireAuth();
+if (!user) throw new Error("Unauthorized");
 const USER_ID = user.id;
-
 const ANSWERS = [
   { label: "POSITIVE", value: 1 },
   { label: "NEGATIVE", value: 2 },
@@ -130,3 +126,7 @@ function collectAnswers(findings) {
     alert("Saved ✅");
   });
 })();
+
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
+  Auth.logout();
+});

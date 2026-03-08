@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Medical Research App</title>
@@ -41,20 +40,10 @@
   <h2>Welcome to MedResearch</h2>
   <p>Select Dashboard or Patients from the navigation.</p>
 <div class="card">
-  <h3>Patient Answers Overview</h3>
-  <canvas id="answersChart"></canvas>
-</div></div>
   </main>
+<script src="auth.js"></script> 
+<script src="index.js"></script>
 
-  <script src="script.js">
- 
-const user = JSON.parse(localStorage.getItem("mr_user") || "null");
 
-if (!user) {
-  window.location.href = "/login.html";
-}
-
-  </script>
-  <script src="dashboard.js"></script>
 </body>
 </html>

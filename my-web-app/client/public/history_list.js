@@ -1,9 +1,6 @@
 const LS_USER = "mr_user";
-const user = JSON.parse(localStorage.getItem(LS_USER) || "null");
-
-if (!user) {
-  window.location.href = "/login.html";
-}
+const user = Auth.requireAuth();
+if (!user) throw new Error("Unauthorized");
 const USER_ID = user.id;
 
 async function getJSON(url) {
@@ -63,3 +60,7 @@ async function postJSON(url, body) {
 window.location.href = `/history_patient.html?id=${patient_id}`;
   });
 })();
+
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
+  Auth.logout();
+});
