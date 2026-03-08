@@ -352,3 +352,16 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+.dashboard-info,
+.dataset-legal{
+  background:#ffffff;
+  padding:20px;
+  border-radius:10px;
+  margin-top:20px;
+  line-height:1.6;
+}
+
+.dataset-legal{
+  font-size:14px;
+  color:#555;
+}
