@@ -75,11 +75,10 @@ async function postJSON(url) {
 function render(data, meta) {
   const { patient, findings } = data;
 
-  document.getElementById("patientTitle").textContent = `Patient ${patient.patient_code}`;
   document.getElementById("img1").src = patient.image1_path;
   document.getElementById("img2").src = patient.image2_path;
 
-  document.getElementById("progressText").textContent =
+  document.getElementById("patientTitle").textContent =
     `Patient ${meta.current_pos + 1} / ${meta.total}`;
 
   const form = document.getElementById("form");
