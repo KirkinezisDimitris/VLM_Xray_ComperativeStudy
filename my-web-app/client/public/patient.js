@@ -1,8 +1,7 @@
-const user = JSON.parse(sessionStorage.getItem("mr_user") || "null");
+const user = Auth.requireAuth();
+if (!user) throw new Error("Unauthorized");
 
-if (!user) {
-  window.location.href = "/login.html";
-}
+Auth.setupProfileMenu();
 
 const USER_ID = user.id;
 document.getElementById("continueBtn").addEventListener("click", () => {

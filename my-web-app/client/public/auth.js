@@ -18,9 +18,36 @@ function logout() {
   window.location.href = "/login.html";
 }
 
+function setupProfileMenu() {
+  const profileBtn = document.getElementById("profileBtn");
+  const profileDropdown = document.getElementById("profileDropdown");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (!profileBtn || !profileDropdown) return;
+
+  profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle("active");
+  });
+
+  logoutBtn?.addEventListener("click", () => {
+    logout();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (
+      !profileBtn.contains(e.target) &&
+      !profileDropdown.contains(e.target)
+    ) {
+      profileDropdown.classList.remove("active");
+    }
+  });
+}
+
 window.Auth = {
   AUTH_KEY,
   getCurrentUser,
   requireAuth,
-  logout
+  logout,
+  setupProfileMenu,
 };
