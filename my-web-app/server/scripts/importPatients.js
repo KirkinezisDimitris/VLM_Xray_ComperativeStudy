@@ -1,93 +1,47 @@
-import fs from "fs/promises";
+import fs from "fs";
 import path from "path";
-import mysql from "mysql2/promise";
-import { fileURLToPath } from "url";
+import { db } from "../src/db.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const XRAY_DIR = path.join(process.cwd(), "xray"); // φάκελος εικόνων
 
-// 🔧 άλλαξέ το αν το dataset folder έχει άλλο όνομα
-const XRAY_DIR = path.join(__dirname, "../../../Final Xray Collection");
+async function run() {
+  const files = fs.readdirSync(XRAY_DIR);
 
-// Τα filenames που περιμένουμε
-const IMG1 = "view1_frontal.jpg";
-const IMG2 = "view2_lateral.jpg";
+  const patients = {};
 
-// DB config (XAMPP)
-export const db = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306,
-});
+  for (const file of files) {
+    if (!file.endsWith(".png") && !file.endsWith(".jpg")) continue;
 
-async function exists(p) {
-  try {
-    await fs.access(p);
-    return true;
-  } catch {
-    return false;
-  }
-}
+    const patientCode = file.split("_")[0];
 
-async function main() {
-  console.log("XRAY_DIR =", XRAY_DIR);
-
-  const entries = await fs.readdir(XRAY_DIR, { withFileTypes: true });
-  const patientDirs = entries
-    .filter((e) => e.isDirectory())
-    .map((e) => e.name)
-    .filter((name) => name.toLowerCase().startsWith("patient")); // patient00032 etc
-
-  console.log("Found patient folders:", patientDirs.length);
-
-  let inserted = 0;
-  let skipped = 0;
-
-  for (const patientCode of patientDirs) {
-    // dataset structure: patientXXXX/study1/*.jpg
-    const studyDir = path.join(XRAY_DIR, patientCode, "study1");
-
-    const img1Fs = path.join(studyDir, IMG1);
-    const img2Fs = path.join(studyDir, IMG2);
-
-    const ok1 = await exists(img1Fs);
-    const ok2 = await exists(img2Fs);
-
-    if (!ok1 || !ok2) {
-      skipped++;
-      console.log(`[SKIP] ${patientCode} missing files:`, {
-        [IMG1]: ok1,
-        [IMG2]: ok2,
-      });
-      continue;
+    if (!patients[patientCode]) {
+      patients[patientCode] = [];
     }
 
-    // ✅ Αποθηκεύουμε URL paths (αυτά θα μπαίνουν σε <img src="...">)
-    const image1Url = `/xray/${patientCode}/study1/${IMG1}`;
-    const image2Url = `/xray/${patientCode}/study1/${IMG2}`;
+    patients[patientCode].push(file);
+  }
 
-    // Upsert by patient_code
-    await pool.query(
+  let inserted = 0;
+
+  for (const code of Object.keys(patients)) {
+    const images = patients[code];
+
+    const image1 = images[0] || null;
+    const image2 = images[1] || null;
+
+    await db.query(
       `
       INSERT INTO patients (patient_code, image1_path, image2_path)
       VALUES (?, ?, ?)
-      ON DUPLICATE KEY UPDATE
-        image1_path = VALUES(image1_path),
-        image2_path = VALUES(image2_path)
       `,
-      [patientCode, image1Url, image2Url]
+      [code, image1, image2]
     );
 
     inserted++;
   }
 
-  console.log(`DONE. inserted/updated=${inserted}, skipped=${skipped}`);
-  await pool.end();
+  console.log("Inserted patients:", inserted);
+  process.exit();
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+run();
