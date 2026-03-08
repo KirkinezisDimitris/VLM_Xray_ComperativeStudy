@@ -1,11 +1,9 @@
 {
-  
-  "dependencies": {
-    "express": "^5.2.1",
-    "mysql2": "^3.18.2"
-  },
+  "name": "medresearch-app",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "start": "node server/src/index.js",
-    "postinstall": "cd server && npm install"
+    "postinstall": "cd server && npm install",
+    "start": "node my-web-app/server/src/index.js"
   }
 }
