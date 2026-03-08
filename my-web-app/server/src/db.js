@@ -1,11 +1,9 @@
 import mysql from "mysql2/promise";
 
 export const db = mysql.createPool({
-  host: "vlm-xray-web-app-database-wv66hu",
-  user: "app_user",
-  password: "1133vlmxraydb",
-  database: "vlmxray",
-  port: 3306,
-  waitForConnections: true,
-  connectionLimit: 10
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
 });
