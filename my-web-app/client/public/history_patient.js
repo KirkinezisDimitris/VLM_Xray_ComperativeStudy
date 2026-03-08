@@ -1,6 +1,7 @@
 const LS_USER = "mr_user";
 const user = Auth.requireAuth();
 if (!user) throw new Error("Unauthorized");
+Auth.setupProfileMenu();
 const USER_ID = user.id;
 const ANSWERS = [
   { label: "POSITIVE", value: 1 },

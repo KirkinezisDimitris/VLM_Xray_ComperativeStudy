@@ -51,6 +51,52 @@ body {
   justify-content: space-between;
 }
 
+.profile {
+  position: relative;
+}
+
+.profile__btn {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border: none;
+  color: white;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.profile__dropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: none;
+  min-width: 120px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.profile__dropdown button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14px;
+}
+
+.profile__dropdown button:hover {
+  background: #f1f5f9;
+}
+
+.profile__dropdown.active {
+  display: block;
+}
 /* =========================
    Logo
 ========================= */

@@ -9,18 +9,29 @@
 </head>
 <body>
 
-<header class="navbar">
-  <div class="navbar__container">
-    <div class="logo">
-      <span class="logo__mark">+</span>
-      <span>MedResearch</span>
+  <header class="navbar">
+    <div class="navbar__container">
+
+      <div class="logo">
+        <span class="logo__mark">+</span>
+        <span class="logo__text">MedResearch</span>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html">Dashboard</a>
+        <a href="patient.html">Patients</a>
+      </nav>
+
+      <div class="profile">
+        <button id="profileBtn" class="profile__btn">👤</button>
+
+        <div id="profileDropdown" class="profile__dropdown">
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
     </div>
-    <nav class="nav">
-      <a href="index.html">Dashboard</a>
-      <a href="patients.html">Patients</a>
-    </nav>
-  </div>
-</header>
+  </header>
 
 <main class="pageContainer">
   <div class="card">

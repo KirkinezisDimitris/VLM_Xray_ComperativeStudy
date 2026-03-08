@@ -24,10 +24,10 @@
       </nav>
 
       <div class="profile">
-        <button id="profileBtn" class="profile__btn">👤</button>
+        <button id="profileBtn" class="profile__btn" type="button">👤</button>
 
         <div id="profileDropdown" class="profile__dropdown">
-          <button id="logoutBtn">Logout</button>
+          <button id="logoutBtn" type="button">Logout</button>
         </div>
       </div>
 
@@ -41,7 +41,13 @@
   <p>Select Dashboard or Patients from the navigation.</p>
 <div class="card">
   </main>
-<script src="auth.js"></script> 
+<script src="auth.js"></script>
+<script>
+  const user = Auth.requireAuth();
+  if (user) {
+    Auth.setupProfileMenu();
+  }
+</script>
 <script src="index.js"></script>
 
 
