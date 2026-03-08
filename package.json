@@ -5,6 +5,7 @@
     "mysql2": "^3.18.2"
   },
   "scripts": {
-    "start": "node my-web-app/server/src/index.js"
+    "start": "node server/src/index.js",
+    "postinstall": "cd server && npm install"
   }
 }
