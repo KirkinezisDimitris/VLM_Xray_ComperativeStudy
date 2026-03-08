@@ -12,7 +12,7 @@ app.use("/api", historyRoutes);
 app.use("/api", authRoutes);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const XRAY_DIR = path.join(__dirname, "../../../Final Xray Collection");
+const XRAY_DIR = "/app/Final Xray Collection";
 const publicDir = path.join(__dirname, "../../client/public");
 app.use("/xray", express.static(XRAY_DIR));
 app.use(express.static(publicDir));
