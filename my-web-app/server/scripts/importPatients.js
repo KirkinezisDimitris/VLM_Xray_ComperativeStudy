@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { db } from "../src/db.js";
 
-const XRAY_DIR = path.join(process.cwd(), "../../../Final Xray Collection");
+const XRAY_DIR = path.join(process.cwd(), "../Final Xray Collection");
 
 async function run() {
 
