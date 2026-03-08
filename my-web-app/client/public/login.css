@@ -74,3 +74,21 @@
   color: #b91c1c;
   font-size: 13px;
 }
+
+.password-wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+.password-wrapper input{
+  width:100%;
+}
+
+.toggle-password{
+  position:absolute;
+  right:12px;
+  cursor:pointer;
+  font-size:16px;
+  user-select:none;
+}
