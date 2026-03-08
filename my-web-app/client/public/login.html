@@ -25,11 +25,15 @@
         <input id="username" name="username" type="text" required />
       </label>
 
-      <label class="field">
-        <span class="field__label">Password</span>
-        <input id="password" name="password" type="password" required />
-      </label>
+<label class="field password-field">
+  <span class="field__label">Password</span>
 
+  <div class="password-wrapper">
+    <input id="password" name="password" type="password" required />
+    <span class="toggle-password" onclick="togglePassword()">👁</span>
+  </div>
+
+</label>
       <button class="btn btn--primary" type="submit">Login</button>
 
       <p id="error" class="errorText" aria-live="polite"></p>
