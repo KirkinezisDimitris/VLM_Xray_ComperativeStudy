@@ -14,13 +14,12 @@ const IMG1 = "view1_frontal.jpg";
 const IMG2 = "view2_lateral.jpg";
 
 // DB config (XAMPP)
-const pool = mysql.createPool({
-  host: "127.0.0.1",
-  user: "root",
-  password: "", // βάλε αν έχεις
-  database: "vlmxray", // ή medresearch (ό,τι έχεις)
-  waitForConnections: true,
-  connectionLimit: 10,
+export const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
 });
 
 async function exists(p) {
