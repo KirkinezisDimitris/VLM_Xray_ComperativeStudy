@@ -84,15 +84,15 @@ function render(data, meta) {
   const form = document.getElementById("form");
   form.innerHTML = findings.map((f) => {
     const group = `finding_${f.finding_id}`;
-    const radios = ANSWERS.map(a => {
-      const checked = (f.answer_choice === a.value) ? "checked" : "";
-      return `
-        <label class="choice">
-          <input type="radio" name="${group}" value="${a.value}" ${checked} ${required}/>
-          ${a.label}
-        </label>
-      `;
-    }).join("");
+const radios = ANSWERS.map(a => {
+  const checked = (f.answer_choice === a.value) ? "checked" : "";
+  return `
+    <label class="choice">
+      <input type="radio" name="${group}" value="${a.value}" ${checked}/>
+      ${a.label}
+    </label>
+  `;
+}).join("");
 
     return `
       <div class="qItem">
