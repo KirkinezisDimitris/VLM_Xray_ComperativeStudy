@@ -139,18 +139,26 @@ function collectAnswers(findings) {
   });
 
   // Next patient
-  document.getElementById("nextBtn").addEventListener("click", async () => {
-    const form = document.getElementById("form");
+document.getElementById("nextBtn").addEventListener("click", async () => {
 
-    const answers = collectAnswers(data.findings);
-    if (!answers) return alert("Answer all 14 first.");
+  const answers = [];
 
-    await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
-    await postJSON(`/api/next?userId=${USER_ID}`);
+  for (const f of data.findings) {
+    const name = `finding_${f.finding_id}`;
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    if (checked) {
+      answers.push({
+        finding_id: f.finding_id,
+        answer_choice: Number(checked.value)
+      });
+    }
+  }
 
-    // reload questionnaire for next patient
-    window.location.reload();
-  });
+  await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
+  await postJSON(`/api/next?userId=${USER_ID}`);
+
+  window.location.reload();
+});
 })();
 
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
