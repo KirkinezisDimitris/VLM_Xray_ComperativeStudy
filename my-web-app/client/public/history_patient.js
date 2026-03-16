@@ -80,7 +80,7 @@ function render({ patient, findings }) {
       const checked = (f.answer_choice === a.value) ? "checked" : "";
       return `
         <label class="choice">
-          <input type="radio" name="${group}" value="${a.value}" ${checked} ${required} />
+          <input type="radio" name="${group}" value="${a.value}" ${checked} />
           ${a.label}
         </label>
       `;
