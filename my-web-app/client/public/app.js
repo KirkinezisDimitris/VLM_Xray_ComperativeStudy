@@ -204,7 +204,6 @@ function renderQuestionnaire() {
     const radios = ANSWERS.map(a => {
       const checked = (savedValue === a.value) ? "checked" : "";
       // required only on first radio of the group to enforce selection
-      const required = (a.value === 1) ? "required" : "";
       return `
         <label class="choice">
           <input type="radio" name="${groupName}" value="${a.value}" ${checked} ${required} />
