@@ -215,8 +215,7 @@ app.put("/api/patients/:id/answers", async (req, res) => {
   if (!Number.isFinite(userId)) return res.status(400).json({ error: "userId required" });
 
   const answers = req.body?.answers;
-  if (!Array.isArray(answers) || answers.length !== 14) {
-    return res.status(400).json({ error: "Expected answers array of length 14" });
+if (!Array.isArray(answers)) {    return res.status(400).json({ error: "Expected answers array of length 14" });
   }
 
   for (const a of answers) {

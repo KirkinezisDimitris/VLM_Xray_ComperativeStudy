@@ -60,8 +60,7 @@ router.put("/patients/:id/answers", async (req, res) => {
   if (!Number.isFinite(patientId)) return res.status(400).json({ error: "Invalid patient id" });
 
   const answers = req.body?.answers;
-  if (!Array.isArray(answers) || answers.length !== 14) {
-    return res.status(400).json({ error: "Expected answers array of length 14" });
+if (!Array.isArray(answers)) {    return res.status(400).json({ error: "Expected answers array of length 14" });
   }
 
   // TODO: όταν κάνεις auth, πάρε updated_by από session/user
