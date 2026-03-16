@@ -104,7 +104,7 @@ app.get("/api/current", async (req, res) => {
   });
 });
 
-// POST next patient (advance pointer)
+// POST next patient (advance pointer + auto-fill Negative for missing)
 // POST /api/next?userId=1
 app.post("/api/next", async (req, res) => {
   const userId = Number(req.query.userId);
@@ -112,6 +112,48 @@ app.post("/api/next", async (req, res) => {
 
   await ensureQueue(userId);
 
+  // find current patient
+  const [[progress]] = await db.query(
+    "SELECT current_pos FROM user_progress WHERE user_id=?",
+    [userId]
+  );
+
+  const [rows] = await db.query(
+    `SELECT patient_id
+     FROM user_patient_queue
+     WHERE user_id=? AND queue_pos=?`,
+    [userId, progress.current_pos]
+  );
+
+  if (rows.length) {
+    const patientId = rows[0].patient_id;
+
+    // all findings
+    const [findings] = await db.query("SELECT id FROM findings");
+
+    // already answered
+    const [answers] = await db.query(
+      "SELECT finding_id FROM patient_answers WHERE patient_id=?",
+      [patientId]
+    );
+
+    const answered = new Set(answers.map(a => a.finding_id));
+
+    // missing findings -> set Negative (2)
+    const missing = findings
+      .filter(f => !answered.has(f.id))
+      .map(f => [patientId, f.id, 2, userId]); // 2 = Negative
+
+    if (missing.length) {
+      await db.query(
+        `INSERT INTO patient_answers (patient_id, finding_id, answer_choice, updated_by)
+         VALUES ${missing.map(() => "(?, ?, ?, ?)").join(", ")}`,
+        missing.flat()
+      );
+    }
+  }
+
+  // advance pointer
   await db.query(
     "UPDATE user_progress SET current_pos = current_pos + 1 WHERE user_id=?",
     [userId]
