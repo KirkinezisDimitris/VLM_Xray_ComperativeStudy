@@ -78,7 +78,6 @@ function render({ patient, findings }) {
     const group = `finding_${f.finding_id}`;
     const radios = ANSWERS.map(a => {
       const checked = (f.answer_choice === a.value) ? "checked" : "";
-      const required = (a.value === 1) ? "required" : "";
       return `
         <label class="choice">
           <input type="radio" name="${group}" value="${a.value}" ${checked} ${required} />

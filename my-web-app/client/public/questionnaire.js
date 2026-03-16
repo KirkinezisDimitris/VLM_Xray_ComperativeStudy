@@ -86,7 +86,6 @@ function render(data, meta) {
     const group = `finding_${f.finding_id}`;
     const radios = ANSWERS.map(a => {
       const checked = (f.answer_choice === a.value) ? "checked" : "";
-      const required = (a.value === 1) ? "required" : "";
       return `
         <label class="choice">
           <input type="radio" name="${group}" value="${a.value}" ${checked} ${required}/>
@@ -142,7 +141,6 @@ function collectAnswers(findings) {
   // Next patient
   document.getElementById("nextBtn").addEventListener("click", async () => {
     const form = document.getElementById("form");
-    if (!form.reportValidity()) return;
 
     const answers = collectAnswers(data.findings);
     if (!answers) return alert("Answer all 14 first.");
