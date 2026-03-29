@@ -125,7 +125,7 @@ function collectAnswers(findings) {
 
   const patientId = current.patient.patient_id;
 
-  const data = await getJSON(`/api/patients/${patientId}/questionnaire`);
+  const data = await getJSON(`/api/patients/${patientId}/questionnaire?userId=${USER_ID}`);
   render(data, current);
   setupImageZoom();
 
