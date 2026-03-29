@@ -110,7 +110,7 @@ function collectAnswers(findings) {
   const patientId = getPatientIdFromUrl();
   if (!patientId) return alert("Missing patient id.");
 
-  const data = await getJSON(`/api/patients/${patientId}/questionnaire`);
+  const data = await getJSON(`/api/patients/${patientId}/questionnaire?userId=${USER_ID}`);
   render(data);
   setupImageZoom();
 

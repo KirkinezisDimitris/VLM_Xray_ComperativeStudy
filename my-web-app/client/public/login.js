@@ -23,6 +23,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e)=>{
     const data = await postJSON("/api/login",{username,password});
 
     sessionStorage.setItem(Auth.AUTH_KEY, JSON.stringify(data.user));
+    sessionStorage.setItem("userId", data.user.id);
 
     window.location.href="/index.html";
 
