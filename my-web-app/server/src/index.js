@@ -133,21 +133,34 @@ app.post("/api/next", async (req, res) => {
 
     // already answered
     const [answers] = await db.query(
-      "SELECT finding_id FROM patient_answers WHERE patient_id=?",
-      [patientId]
+      "SELECT finding_id FROM patient_answers WHERE patient_id=? AND user_id=?",
+      [patientId, userId]
     );
 
     const answered = new Set(answers.map(a => a.finding_id));
 
     // missing findings -> set Negative (2)
+    const [[user]] = await db.query(
+      "SELECT username, role FROM accounts WHERE id=?",
+      [userId]
+    );
+
     const missing = findings
       .filter(f => !answered.has(f.id))
-      .map(f => [patientId, f.id, 2, userId]); // 2 = Negative
+      .map(f => [
+        userId,
+        user.username,
+        user.role,
+        patientId,
+        f.id,
+        2
+      ]);
 
     if (missing.length) {
       await db.query(
-        `INSERT INTO patient_answers (patient_id, finding_id, answer_choice, updated_by)
-         VALUES ${missing.map(() => "(?, ?, ?, ?)").join(", ")}`,
+        `INSERT INTO patient_answers 
+        (user_id, username, role, patient_id, finding_id, answer_choice)
+         VALUES ${missing.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}`,
         missing.flat()
       );
     }
@@ -184,7 +197,7 @@ app.get("/api/patients/:id/questionnaire", async (req, res) => {
       LEFT JOIN patient_answers pa
         ON pa.patient_id = p.id
       AND pa.finding_id = f.id
-      AND pa.updated_by = ?
+      AND pa.user_id = ?
       WHERE p.id = ?
       ORDER BY f.id
       `,
@@ -228,16 +241,28 @@ if (!Array.isArray(answers)) {    return res.status(400).json({ error: "Expected
     }
   }
 
-  const values = answers.map(a => [patientId, a.finding_id, a.answer_choice, userId]);
+  const [[user]] = await db.query(
+    "SELECT username, role FROM accounts WHERE id=?",
+    [userId]
+  );
+
+  const values = answers.map(a => [
+    userId,
+    user.username,
+    user.role,
+    patientId,
+    a.finding_id,
+    a.answer_choice
+  ]);
 
   await db.query(
     `
-    INSERT INTO patient_answers (patient_id, finding_id, answer_choice, updated_by)
-    VALUES ${values.map(() => "(?, ?, ?, ?)").join(", ")}
+    INSERT INTO patient_answers 
+    (user_id, username, role, patient_id, finding_id, answer_choice)
+    VALUES ${values.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
     ON DUPLICATE KEY UPDATE
       answer_choice = VALUES(answer_choice),
-      updated_by    = VALUES(updated_by),
-      updated_at    = CURRENT_TIMESTAMP
+      updated_at = CURRENT_TIMESTAMP
     `,
     values.flat()
   );
