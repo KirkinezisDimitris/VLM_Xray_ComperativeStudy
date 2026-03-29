@@ -1,4 +1,4 @@
-# Node modules (οπουδήποτε στο project)
+# Dependencies
 node_modules/
 
 # Environment variables
@@ -7,9 +7,10 @@ node_modules/
 # Logs
 *.log
 
+
 # OS
 .DS_Store
 
-# Build folders
+# Build output
 dist/
 build/
