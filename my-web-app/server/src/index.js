@@ -167,27 +167,29 @@ app.post("/api/next", async (req, res) => {
 app.get("/api/patients/:id/questionnaire", async (req, res) => {
   const patientId = Number(req.params.id);
   if (!Number.isFinite(patientId)) return res.status(400).json({ error: "Invalid patient id" });
+    const userId = Number(req.query.userId);
 
-  const [rows] = await db.query(
-    `
-    SELECT
-      p.id AS patient_id,
-      p.patient_code,
-      p.image1_path,
-      p.image2_path,
-      f.id AS finding_id,
-      f.name AS finding_name,
-      pa.answer_choice
-    FROM patients p
-    JOIN findings f
-    LEFT JOIN patient_answers pa
-      ON pa.patient_id = p.id
-     AND pa.finding_id = f.id
-    WHERE p.id = ?
-    ORDER BY f.id
-    `,
-    [patientId]
-  );
+    const [rows] = await db.query(
+      `
+      SELECT
+        p.id AS patient_id,
+        p.patient_code,
+        p.image1_path,
+        p.image2_path,
+        f.id AS finding_id,
+        f.name AS finding_name,
+        pa.answer_choice
+      FROM patients p
+      JOIN findings f
+      LEFT JOIN patient_answers pa
+        ON pa.patient_id = p.id
+      AND pa.finding_id = f.id
+      AND pa.updated_by = ?
+      WHERE p.id = ?
+      ORDER BY f.id
+      `,
+      [userId, patientId]
+    );
 
   if (!rows.length) return res.status(404).json({ error: "Patient not found" });
 
