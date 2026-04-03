@@ -139,14 +139,16 @@ app.post("/api/next", async (req, res) => {
 
       const answered = new Set(answers.map(a => a.finding_id));
 
-      const [[user]] = await db.query(
+      const [users] = await db.query(
         "SELECT username, role FROM accounts WHERE id=?",
         [userId]
       );
 
-      if (!user) {
+      if (!users.length) {
         return res.status(400).json({ error: "User not found" });
       }
+
+      const user = users[0];
 
       const missing = findings
         .filter(f => !answered.has(f.id))
@@ -159,7 +161,7 @@ app.post("/api/next", async (req, res) => {
           2
         ]);
 
-      if (missing.length) {
+      if (missing.length > 0) {
         await db.query(
           `INSERT INTO patient_answers 
           (user_id, username, role, patient_id, finding_id, answer_choice)
@@ -177,8 +179,8 @@ app.post("/api/next", async (req, res) => {
     res.json({ ok: true });
 
   } catch (err) {
-    console.error("NEXT ERROR:", err);
-    res.status(500).json({ error: "Server error" });
+    console.error("🔥 NEXT ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -249,10 +251,16 @@ if (!Array.isArray(answers)) {    return res.status(400).json({ error: "Expected
     }
   }
 
-  const [[user]] = await db.query(
-    "SELECT username, role FROM accounts WHERE id=?",
-    [userId]
-  );
+const [users] = await db.query(
+  "SELECT username, role FROM accounts WHERE id=?",
+  [userId]
+);
+
+if (!users.length) {
+  return res.status(400).json({ error: "User not found" });
+}
+
+const user = users[0];
 
   const values = answers.map(a => [
     userId,
