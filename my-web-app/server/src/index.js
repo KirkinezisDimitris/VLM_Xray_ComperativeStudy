@@ -273,12 +273,20 @@ app.put("/api/patients/:id/answers", async (req, res) => {
     );
 
     // FULL answers (auto-negative)
-    const fullAnswers = findings.map(f => ({
-      finding_id: f.id,
-      answer_choice: answerMap.get(f.id) || 2
-    }));
+    const fullAnswers = findings.map(f => {
+      let value = Number(answerMap.get(f.id));
 
-    for (const a of answers) {
+      if (![1,2,3].includes(value)) {
+        value = 2; // default NEGATIVE
+      }
+
+      return {
+        finding_id: f.id,
+        answer_choice: value
+      };
+    });
+
+    for (const a of fullAnswers) {
       const fid = Number(a.finding_id);
       const ch = Number(a.answer_choice);
 
@@ -306,8 +314,9 @@ app.put("/api/patients/:id/answers", async (req, res) => {
       a.finding_id,
       a.answer_choice
     ]);
-
+    console.log("VALUES:", values);
     await db.query(
+      
       `INSERT INTO patient_answers 
       (user_id, username, role, patient_id, finding_id, answer_choice)
       VALUES ${values.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
