@@ -145,37 +145,34 @@ app.post("/api/next", async (req, res) => {
 
       const answered = new Set(answers.map(a => a.finding_id));
 
-      const [users] = await db.query(
-        "SELECT username, role FROM accounts WHERE id=?",
-        [userId]
-      );
+      // 👉 ΠΑΝΤΑ φτιάξε πλήρη λίστα answers
+      const finalAnswers = findings.map(f => {
+        if (answered.has(f.id)) return null;
 
-      if (!users.length) {
-        return res.status(400).json({ error: "User not found" });
-      }
-
-      const user = users[0];
-
-      const missing = findings
-        .filter(f => !answered.has(f.id))
-        .map(f => [
+        return [
           userId,
           user.username,
           user.role,
           patientId,
           f.id,
-          2
-        ]);
+          2 // NEGATIVE
+        ];
+      }).filter(Boolean);
+      
+      if (!users.length) {
+        return res.status(400).json({ error: "User not found" });
+      }
+      const user = users[0];
 
-      if (missing.length > 0) {
+      if (finalAnswers.length > 0) {
         await db.query(
           `INSERT INTO patient_answers 
           (user_id, username, role, patient_id, finding_id, answer_choice)
-          VALUES ${missing.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
+          VALUES ${finalAnswers.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
           ON DUPLICATE KEY UPDATE
             answer_choice = VALUES(answer_choice),
             updated_at = CURRENT_TIMESTAMP`,
-          missing.flat()
+          finalAnswers.flat()
         );
       }
     }
