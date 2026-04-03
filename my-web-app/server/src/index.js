@@ -39,9 +39,10 @@ async function ensureQueue(userId) {
     );
 
     if (!progress) {
-      await db.query(
-        "INSERT INTO user_progress (user_id, current_pos) VALUES (?, 0)",
-      );
+    await db.query(
+      "INSERT INTO user_progress (user_id, current_pos) VALUES (?, 0)",
+      [userId]
+    );
     }
 
     return;
@@ -144,7 +145,16 @@ app.post("/api/next", async (req, res) => {
       );
 
       const answered = new Set(answers.map(a => a.finding_id));
+      const [users] = await db.query(
+        "SELECT username, role FROM accounts WHERE id=?",
+        [userId]
+      );
 
+      if (!users.length) {
+        return res.status(400).json({ error: "User not found" });
+      }
+
+      const user = users[0];
       // 👉 ΠΑΝΤΑ φτιάξε πλήρη λίστα answers
       const finalAnswers = findings.map(f => {
         if (answered.has(f.id)) return null;
@@ -159,10 +169,6 @@ app.post("/api/next", async (req, res) => {
         ];
       }).filter(Boolean);
       
-      if (!users.length) {
-        return res.status(400).json({ error: "User not found" });
-      }
-      const user = users[0];
 
       if (finalAnswers.length > 0) {
         await db.query(
