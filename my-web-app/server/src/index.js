@@ -258,9 +258,19 @@ app.put("/api/patients/:id/answers", async (req, res) => {
       return res.status(400).json({ error: "Invalid answers payload" });
     }
 
-    if (answers.length === 0) {
-      return res.json({ ok: true });
-    }
+    // πάρε όλα τα findings
+    const [findings] = await db.query("SELECT id FROM findings");
+
+    // κάνε map τις απαντήσεις που ήρθαν
+    const answerMap = new Map(
+      answers.map(a => [Number(a.finding_id), Number(a.answer_choice)])
+    );
+
+    // 👉 φτιάξε πλήρες set answers (auto-negative)
+    const fullAnswers = findings.map(f => ({
+      finding_id: f.id,
+      answer_choice: answerMap.get(f.id) || 2 // 2 = NEGATIVE
+    }));
 
     for (const a of answers) {
       const fid = Number(a.finding_id);
@@ -282,7 +292,7 @@ app.put("/api/patients/:id/answers", async (req, res) => {
 
     const user = users[0];
 
-    const values = answers.map(a => [
+    const values = fullAnswers.map(a => [
       userId,
       user.username,
       user.role,
