@@ -234,59 +234,73 @@ app.get("/api/patients/:id/questionnaire", async (req, res) => {
 // PUT save answers (bulk upsert 14)
 // PUT /api/patients/:id/answers?userId=1
 app.put("/api/patients/:id/answers", async (req, res) => {
-  const patientId = Number(req.params.id);
-  const userId = Number(req.query.userId);
-  if (!Number.isFinite(patientId)) return res.status(400).json({ error: "Invalid patient id" });
-  if (!Number.isFinite(userId)) return res.status(400).json({ error: "userId required" });
-  if (answers.length === 0) {
-  return res.json({ ok: true });
-}
+  try {
+    const patientId = Number(req.params.id);
+    const userId = Number(req.query.userId);
 
-  const answers = req.body?.answers;
-if (!Array.isArray(answers)) {    return res.status(400).json({ error: "Expected answers array of length 14" });
-  }
+    if (!Number.isFinite(patientId)) {
+      return res.status(400).json({ error: "Invalid patient id" });
+    }
 
-  for (const a of answers) {
-    const fid = Number(a.finding_id);
-    const ch = Number(a.answer_choice);
-    if (!Number.isFinite(fid) || ![1,2,3].includes(ch)) {
+    if (!Number.isFinite(userId)) {
+      return res.status(400).json({ error: "userId required" });
+    }
+
+    const answers = req.body?.answers;
+
+    if (!Array.isArray(answers)) {
       return res.status(400).json({ error: "Invalid answers payload" });
     }
+
+    if (answers.length === 0) {
+      return res.json({ ok: true });
+    }
+
+    for (const a of answers) {
+      const fid = Number(a.finding_id);
+      const ch = Number(a.answer_choice);
+
+      if (!Number.isFinite(fid) || ![1,2,3].includes(ch)) {
+        return res.status(400).json({ error: "Invalid answers payload" });
+      }
+    }
+
+    const [users] = await db.query(
+      "SELECT username, role FROM accounts WHERE id=?",
+      [userId]
+    );
+
+    if (!users.length) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    const user = users[0];
+
+    const values = answers.map(a => [
+      userId,
+      user.username,
+      user.role,
+      patientId,
+      a.finding_id,
+      a.answer_choice
+    ]);
+
+    await db.query(
+      `INSERT INTO patient_answers 
+      (user_id, username, role, patient_id, finding_id, answer_choice)
+      VALUES ${values.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
+      ON DUPLICATE KEY UPDATE
+        answer_choice = VALUES(answer_choice),
+        updated_at = CURRENT_TIMESTAMP`,
+      values.flat()
+    );
+
+    res.json({ ok: true });
+
+  } catch (err) {
+    console.error("🔥 SAVE ERROR:", err);
+    res.status(500).json({ error: err.message });
   }
-
-const [users] = await db.query(
-  "SELECT username, role FROM accounts WHERE id=?",
-  [userId]
-);
-
-if (!users.length) {
-  return res.status(400).json({ error: "User not found" });
-}
-
-const user = users[0];
-
-  const values = answers.map(a => [
-    userId,
-    user.username,
-    user.role,
-    patientId,
-    a.finding_id,
-    a.answer_choice
-  ]);
-
-  await db.query(
-    `
-    INSERT INTO patient_answers 
-    (user_id, username, role, patient_id, finding_id, answer_choice)
-    VALUES ${values.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
-    ON DUPLICATE KEY UPDATE
-      answer_choice = VALUES(answer_choice),
-      updated_at = CURRENT_TIMESTAMP
-    `,
-    values.flat()
-  );
-
-  res.json({ ok: true });
 });
 
 // default
