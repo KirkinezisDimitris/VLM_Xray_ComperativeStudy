@@ -154,7 +154,11 @@ document.getElementById("nextBtn").addEventListener("click", async () => {
     }
   }
 
-  await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
+  // 👉 IMPORTANT: μόνο αν έχει answers κάνε save
+  if (answers.length > 0) {
+    await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
+  }
+
   await postJSON(`/api/next?userId=${USER_ID}`);
 
   window.location.reload();
