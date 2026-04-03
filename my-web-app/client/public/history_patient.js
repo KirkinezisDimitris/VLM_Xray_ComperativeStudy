@@ -119,12 +119,31 @@ function collectAnswers(findings) {
   });
 
   document.getElementById("saveBtn").addEventListener("click", async () => {
-    const answers = collectAnswers(data.findings);
-    if (!answers) return alert("Answer all 14 first.");
 
-    await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
-    alert("Saved ✅");
-  });
+  const answers = [];
+
+  for (const f of data.findings) {
+    const name = `finding_${f.finding_id}`;
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+
+    if (checked) {
+      answers.push({
+        finding_id: f.finding_id,
+        answer_choice: Number(checked.value)
+      });
+    } else {
+      // 👉 AUTO NEGATIVE
+      answers.push({
+        finding_id: f.finding_id,
+        answer_choice: 2
+      });
+    }
+  }
+
+  await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
+
+  alert("Saved ✅");
+});
 })();
 
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
