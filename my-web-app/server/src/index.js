@@ -33,11 +33,17 @@ async function ensureQueue(userId) {
     [userId]
   );
   if (qCount.c > 0) {
-    // ensure progress exists
-    await db.query(
-      "INSERT INTO user_progress (user_id, current_pos) VALUES (?, 0) ON DUPLICATE KEY UPDATE user_id=user_id",
+    const [[progress]] = await db.query(
+      "SELECT 1 FROM user_progress WHERE user_id=?",
       [userId]
     );
+
+    if (!progress) {
+      await db.query(
+        "INSERT INTO user_progress (user_id, current_pos) VALUES (?, 0)",
+      );
+    }
+
     return;
   }
 
@@ -165,7 +171,10 @@ app.post("/api/next", async (req, res) => {
         await db.query(
           `INSERT INTO patient_answers 
           (user_id, username, role, patient_id, finding_id, answer_choice)
-          VALUES ${missing.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}`,
+          VALUES ${missing.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
+          ON DUPLICATE KEY UPDATE
+            answer_choice = VALUES(answer_choice),
+            updated_at = CURRENT_TIMESTAMP`,
           missing.flat()
         );
       }
