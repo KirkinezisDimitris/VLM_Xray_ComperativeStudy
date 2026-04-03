@@ -261,15 +261,15 @@ app.put("/api/patients/:id/answers", async (req, res) => {
     // πάρε όλα τα findings
     const [findings] = await db.query("SELECT id FROM findings");
 
-    // κάνε map τις απαντήσεις που ήρθαν
+    // map answers που ήρθαν
     const answerMap = new Map(
       answers.map(a => [Number(a.finding_id), Number(a.answer_choice)])
     );
 
-    // 👉 φτιάξε πλήρες set answers (auto-negative)
+    // FULL answers (auto-negative)
     const fullAnswers = findings.map(f => ({
       finding_id: f.id,
-      answer_choice: answerMap.get(f.id) || 2 // 2 = NEGATIVE
+      answer_choice: answerMap.get(f.id) || 2
     }));
 
     for (const a of answers) {

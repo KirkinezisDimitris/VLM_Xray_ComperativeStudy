@@ -1,3 +1,4 @@
+let findingsData = [];
 const LS_USER = "mr_user";
 const user = Auth.requireAuth();
 if (!user) throw new Error("Unauthorized");
@@ -109,8 +110,8 @@ function collectAnswers(findings) {
 (async function boot() {
   const patientId = getPatientIdFromUrl();
   if (!patientId) return alert("Missing patient id.");
-
   const data = await getJSON(`/api/patients/${patientId}/questionnaire?userId=${USER_ID}`);
+  findingsData = data.findings;
   render(data);
   setupImageZoom();
 
@@ -122,7 +123,7 @@ function collectAnswers(findings) {
 
   const answers = [];
 
-  for (const f of data.findings) {
+  for (const f of findingsData) {
     const name = `finding_${f.finding_id}`;
     const checked = document.querySelector(`input[name="${name}"]:checked`);
 
