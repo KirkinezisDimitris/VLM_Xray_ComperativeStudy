@@ -3,7 +3,6 @@ let findingsData = [];
 const user = Auth.requireAuth();
 if (!user) throw new Error("Unauthorized");
 Auth.setupProfileMenu();
-
 const USER_ID = user.id;
 
 const ANSWERS = [
@@ -34,7 +33,7 @@ async function putJSON(url, body) {
   return res.json();
 }
 
-/* ── Visual feedback στο button αντί για alert popup ── */
+// Δείχνει feedback στο button αντί για alert popup
 function showBtnFeedback(btn, text, durationMs = 2000) {
   const original    = btn.textContent;
   btn.textContent   = text;
@@ -47,7 +46,6 @@ function showBtnFeedback(btn, text, durationMs = 2000) {
   }, durationMs);
 }
 
-/* ── Image zoom ── */
 function setupImageZoom() {
   const modal    = document.getElementById("imgModal");
   const modalImg = document.getElementById("imgModalContent");
@@ -74,9 +72,6 @@ function setupImageZoom() {
   window.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 }
 
-/* ── Render form ──
-   FIX: Number(f.answer_choice) ώστε "2" === 2 να δουλεύει σωστά
-── */
 function render({ patient, findings }) {
   document.getElementById("progressText").textContent =
     `Editing answers • ${findings.length} findings`;
@@ -85,7 +80,8 @@ function render({ patient, findings }) {
 
   const form = document.getElementById("form");
   form.innerHTML = findings.map((f, idx) => {
-    const group      = `finding_${f.finding_id}`;
+    const group = `finding_${f.finding_id}`;
+    // Number() για να δουλεύει σωστά η σύγκριση ("2" === 2 → false χωρίς αυτό)
     const savedValue = Number(f.answer_choice);
 
     const radios = ANSWERS.map(a => {
@@ -107,7 +103,7 @@ function render({ patient, findings }) {
   }).join("");
 }
 
-/* ── Συλλέγει όλα τα answers — αναπάντητα → NEGATIVE (2) ── */
+// Συλλέγει όλα τα 14 answers — αναπάντητα παίρνουν NEGATIVE (2)
 function collectAllAnswers() {
   return findingsData.map((f) => {
     const name    = `finding_${f.finding_id}`;
@@ -119,7 +115,6 @@ function collectAllAnswers() {
   });
 }
 
-/* ── Boot ── */
 (async function boot() {
   const patientId = getPatientIdFromUrl();
   if (!patientId) return alert("Missing patient id.");
@@ -138,7 +133,7 @@ function collectAllAnswers() {
     window.location.href = "/history_list.html";
   });
 
-  /* ── Save: αποθηκεύει χωρίς popup — feedback στο button ── */
+  // Save — χωρίς popup, feedback στο button
   const saveBtn = document.getElementById("saveBtn");
   saveBtn?.addEventListener("click", async () => {
     try {

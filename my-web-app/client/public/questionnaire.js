@@ -35,7 +35,7 @@ async function postJSON(url, body = {}) {
   return res.json();
 }
 
-/* ── Visual feedback στο button αντί για alert popup ── */
+// Δείχνει feedback στο button αντί για alert popup
 function showBtnFeedback(btn, text, durationMs = 2000) {
   const original    = btn.textContent;
   btn.textContent   = text;
@@ -85,7 +85,7 @@ function render(data, meta) {
   const form = document.getElementById("form");
   form.innerHTML = findings.map((f) => {
     const group = `finding_${f.finding_id}`;
-    // FIX: coerce σε Number ώστε "2" === 2 να δουλεύει σωστά
+    // Number() για να δουλεύει σωστά η σύγκριση ("2" === 2 → false χωρίς αυτό)
     const savedValue = Number(f.answer_choice);
 
     const radios = ANSWERS.map(a => {
@@ -107,7 +107,7 @@ function render(data, meta) {
   }).join("");
 }
 
-/* ── Συλλέγει όλα τα answers — αναπάντητα → NEGATIVE (2) ── */
+// Συλλέγει όλα τα 14 answers — αναπάντητα παίρνουν NEGATIVE (2)
 function collectAllAnswers(findings) {
   return findings.map((f) => {
     const name    = `finding_${f.finding_id}`;
@@ -120,20 +120,35 @@ function collectAllAnswers(findings) {
 }
 
 (async function boot() {
-  const current = await getJSON(`/api/current?userId=${USER_ID}`);
+  // 1. Φόρτωσε τον τρέχοντα patient από τον server
+  let current;
+  try {
+    current = await getJSON(`/api/current?userId=${USER_ID}`);
+  } catch (err) {
+    console.error("Failed to load current patient:", err);
+    return;
+  }
+
   if (current.done) {
     alert("Finished! No more patients.");
     window.location.href = "/patients.html";
     return;
   }
 
+  // 2. Φόρτωσε τα findings του patient
   const patientId = current.patient.patient_id;
-  const data      = await getJSON(`/api/patients/${patientId}/questionnaire?userId=${USER_ID}`);
+  let data;
+  try {
+    data = await getJSON(`/api/patients/${patientId}/questionnaire?userId=${USER_ID}`);
+  } catch (err) {
+    console.error("Failed to load questionnaire:", err);
+    return;
+  }
 
   render(data, current);
   setupImageZoom();
 
-  /* ── Save: αποθηκεύει χωρίς popup, feedback στο button ── */
+  // 3. Save button — αποθηκεύει χωρίς popup
   const saveBtn = document.getElementById("saveBtn");
   saveBtn?.addEventListener("click", async () => {
     try {
@@ -146,11 +161,11 @@ function collectAllAnswers(findings) {
     }
   });
 
-  /* ── Next Patient:
-        1. Συλλέγει όλα τα answers (αναπάντητα → NEGATIVE)
-        2. Αποθηκεύει στο DB
-        3. Προχωράει στον επόμενο patient
-  ── */
+  // 4. Next Patient button:
+  //    α) Μαζεύει όλα τα answers (αναπάντητα → NEGATIVE)
+  //    β) Αποθηκεύει στο DB με PUT
+  //    γ) Προχωράει την ουρά με POST /api/next
+  //    δ) Reload για τον επόμενο patient
   const nextBtn = document.getElementById("nextBtn");
   nextBtn?.addEventListener("click", async () => {
     try {
