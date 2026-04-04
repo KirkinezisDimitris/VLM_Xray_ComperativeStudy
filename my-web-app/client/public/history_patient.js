@@ -34,6 +34,19 @@ async function putJSON(url, body) {
   return res.json();
 }
 
+/* ── Visual feedback στο button αντί για alert popup ── */
+function showBtnFeedback(btn, text, durationMs = 2000) {
+  const original    = btn.textContent;
+  btn.textContent   = text;
+  btn.disabled      = true;
+  btn.style.opacity = "0.7";
+  setTimeout(() => {
+    btn.textContent   = original;
+    btn.disabled      = false;
+    btn.style.opacity = "";
+  }, durationMs);
+}
+
 /* ── Image zoom ── */
 function setupImageZoom() {
   const modal    = document.getElementById("imgModal");
@@ -62,20 +75,17 @@ function setupImageZoom() {
 }
 
 /* ── Render form ──
-   FIX: coerce answer_choice to Number() before comparing,
-   because MySQL can return it as a string ("1","2","3").
-   Without this, checked="" for every radio → nothing pre-selected.
-*/
+   FIX: Number(f.answer_choice) ώστε "2" === 2 να δουλεύει σωστά
+── */
 function render({ patient, findings }) {
-  document.getElementById("progressText").textContent = `Editing answers • ${findings.length} findings`;
+  document.getElementById("progressText").textContent =
+    `Editing answers • ${findings.length} findings`;
   document.getElementById("img1").src = patient.image1_path;
   document.getElementById("img2").src = patient.image2_path;
 
   const form = document.getElementById("form");
   form.innerHTML = findings.map((f, idx) => {
-    const group = `finding_${f.finding_id}`;
-
-    // ← KEY FIX: Number() so "2" === 2 comparison works
+    const group      = `finding_${f.finding_id}`;
     const savedValue = Number(f.answer_choice);
 
     const radios = ANSWERS.map(a => {
@@ -97,10 +107,7 @@ function render({ patient, findings }) {
   }).join("");
 }
 
-/* ── Collect answers ──
-   Always returns all findings.
-   Any finding without a selected radio defaults to NEGATIVE (2).
-*/
+/* ── Συλλέγει όλα τα answers — αναπάντητα → NEGATIVE (2) ── */
 function collectAllAnswers() {
   return findingsData.map((f) => {
     const name    = `finding_${f.finding_id}`;
@@ -131,14 +138,16 @@ function collectAllAnswers() {
     window.location.href = "/history_list.html";
   });
 
-  document.getElementById("saveBtn")?.addEventListener("click", async () => {
+  /* ── Save: αποθηκεύει χωρίς popup — feedback στο button ── */
+  const saveBtn = document.getElementById("saveBtn");
+  saveBtn?.addEventListener("click", async () => {
     try {
       const answers = collectAllAnswers();
       await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
-      alert("Saved ✅");
+      showBtnFeedback(saveBtn, "Saved ✅");
     } catch (err) {
       console.error("Save error:", err);
-      alert("Save failed ❌ — check console.");
+      showBtnFeedback(saveBtn, "Error ❌", 3000);
     }
   });
 })();
