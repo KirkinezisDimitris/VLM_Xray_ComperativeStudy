@@ -33,7 +33,6 @@ async function putJSON(url, body) {
   return res.json();
 }
 
-// Δείχνει feedback στο button αντί για alert popup
 function showBtnFeedback(btn, text, durationMs = 2000) {
   const original    = btn.textContent;
   btn.textContent   = text;
@@ -80,9 +79,8 @@ function render({ patient, findings }) {
 
   const form = document.getElementById("form");
   form.innerHTML = findings.map((f, idx) => {
-    const group = `finding_${f.finding_id}`;
-    // Number() για να δουλεύει σωστά η σύγκριση ("2" === 2 → false χωρίς αυτό)
-    const savedValue = Number(f.answer_choice);
+    const group      = `finding_${f.finding_id}`;
+    const savedValue = Number(f.answer_choice); // coerce: "2" === 2
 
     const radios = ANSWERS.map(a => {
       const checked = (savedValue === a.value) ? "checked" : "";
@@ -103,7 +101,7 @@ function render({ patient, findings }) {
   }).join("");
 }
 
-// Συλλέγει όλα τα 14 answers — αναπάντητα παίρνουν NEGATIVE (2)
+// Συλλέγει όλα τα answers — αναπάντητα → NEGATIVE (2)
 function collectAllAnswers() {
   return findingsData.map((f) => {
     const name    = `finding_${f.finding_id}`;
@@ -112,6 +110,14 @@ function collectAllAnswers() {
       finding_id:    f.finding_id,
       answer_choice: checked ? Number(checked.value) : 2,
     };
+  });
+}
+
+// Ελέγχει αν ο patient έχει τουλάχιστον μία αναπάντητη ερώτηση
+function hasUnanswered() {
+  return findingsData.some((f) => {
+    const name = `finding_${f.finding_id}`;
+    return !document.querySelector(`input[name="${name}"]:checked`);
   });
 }
 
@@ -133,7 +139,26 @@ function collectAllAnswers() {
     window.location.href = "/history_list.html";
   });
 
-  // Save — χωρίς popup, feedback στο button
+  // Αν ο patient έχει αναπάντητες ερωτήσεις, μόλις ο χρήστης κλικάρει
+  // οποιοδήποτε radio → αποθήκευσε αμέσως (κρατώντας την επιλογή του
+  // και βάζοντας NEGATIVE στις υπόλοιπες) και κάνε refresh.
+  const form = document.getElementById("form");
+  if (hasUnanswered()) {
+    form.addEventListener("change", async (e) => {
+      if (!e.target.matches("input[type='radio']")) return;
+
+      try {
+        const answers = collectAllAnswers();
+        await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
+        // Refresh ώστε να φορτωθούν τα αποθηκευμένα answers από το DB
+        window.location.reload();
+      } catch (err) {
+        console.error("Auto-save error:", err);
+      }
+    }, { once: true }); // once: true → πυροδοτείται μόνο στο πρώτο κλικ
+  }
+
+  // Save button — χειροκίνητη αποθήκευση χωρίς popup
   const saveBtn = document.getElementById("saveBtn");
   saveBtn?.addEventListener("click", async () => {
     try {
