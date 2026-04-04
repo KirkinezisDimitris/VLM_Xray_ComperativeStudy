@@ -113,14 +113,6 @@ function collectAllAnswers() {
   });
 }
 
-// Ελέγχει αν ο patient έχει τουλάχιστον μία αναπάντητη ερώτηση
-function hasUnanswered() {
-  return findingsData.some((f) => {
-    const name = `finding_${f.finding_id}`;
-    return !document.querySelector(`input[name="${name}"]:checked`);
-  });
-}
-
 (async function boot() {
   const patientId = getPatientIdFromUrl();
   if (!patientId) return alert("Missing patient id.");
@@ -139,35 +131,29 @@ function hasUnanswered() {
     window.location.href = "/history_list.html";
   });
 
-  // Αν ο patient έχει αναπάντητες ερωτήσεις, μόλις ο χρήστης κλικάρει
-  // οποιοδήποτε radio → αποθήκευσε αμέσως (κρατώντας την επιλογή του
-  // και βάζοντας NEGATIVE στις υπόλοιπες) και κάνε refresh.
-  const form = document.getElementById("form");
-  if (hasUnanswered()) {
-    form.addEventListener("change", async (e) => {
-      if (!e.target.matches("input[type='radio']")) return;
-
-      try {
-        const answers = collectAllAnswers();
-        await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
-        // Refresh ώστε να φορτωθούν τα αποθηκευμένα answers από το DB
-        window.location.reload();
-      } catch (err) {
-        console.error("Auto-save error:", err);
-      }
-    }, { once: true }); // once: true → πυροδοτείται μόνο στο πρώτο κλικ
-  }
-
-  // Save button — χειροκίνητη αποθήκευση χωρίς popup
+  // Save Changes:
+  // - Κρατάει ό,τι έχει επιλεγεί
+  // - Συμπληρώνει NEGATIVE στα αναπάντητα
+  // - Αποθηκεύει στο DB
+  // - Κάνει reload για να εμφανιστούν τα αποθηκευμένα answers
   const saveBtn = document.getElementById("saveBtn");
   saveBtn?.addEventListener("click", async () => {
     try {
+      saveBtn.textContent = "Saving…";
+      saveBtn.disabled    = true;
+
       const answers = collectAllAnswers();
       await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
-      showBtnFeedback(saveBtn, "Saved ✅");
+
+      // Reload ώστε να φορτωθούν τα answers από το DB και να φανούν τα radios
+      window.location.reload();
     } catch (err) {
       console.error("Save error:", err);
-      showBtnFeedback(saveBtn, "Error ❌", 3000);
+      saveBtn.textContent = "Error ❌";
+      setTimeout(() => {
+        saveBtn.textContent = "Save Changes";
+        saveBtn.disabled    = false;
+      }, 3000);
     }
   });
 })();
