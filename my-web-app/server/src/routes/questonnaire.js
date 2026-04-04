@@ -1,96 +1,143 @@
-import express from "express";
-import { db } from "../db.js";
+let findingsData = [];
+const user = Auth.requireAuth();
+if (!user) throw new Error("Unauthorized");
+Auth.setupProfileMenu();
+const USER_ID = user.id;
 
-const router = express.Router();
+const ANSWERS = [
+  { label: "POSITIVE", value: 1 },
+  { label: "NEGATIVE", value: 2 },
+  { label: "UNCERTAIN", value: 3 },
+];
 
-/**
- * GET /api/patients/:id/questionnaire
- * Returns: patient info + findings + current answers
- */
-router.get("/patients/:id/questionnaire", async (req, res) => {
-  const patientId = Number(req.params.id);
-  if (!Number.isFinite(patientId)) return res.status(400).json({ error: "Invalid patient id" });
+async function getJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Request failed: " + url);
+  return res.json();
+}
 
-  const [rows] = await db.query(
-    `
-    SELECT
-      p.id AS patient_id,
-      p.patient_code,
-      p.image1_path,
-      p.image2_path,
-      f.id AS finding_id,
-      f.name AS finding_name,
-      pa.answer_choice
-    FROM patients p
-    JOIN findings f
-    LEFT JOIN patient_answers pa
-      ON pa.patient_id = p.id
-     AND pa.finding_id = f.id
-    WHERE p.id = ?
-    ORDER BY f.id;
-    `,
-    [patientId]
-  );
+async function putJSON(url, body) {
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error("PUT failed: " + url);
+  return res.json();
+}
 
-  if (!rows.length) return res.status(404).json({ error: "Patient not found" });
+async function postJSON(url, body = {}) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error("POST failed: " + url);
+  return res.json();
+}
 
-  const patient = {
-    id: rows[0].patient_id,
-    patient_code: rows[0].patient_code,
-    image1_path: rows[0].image1_path,
-    image2_path: rows[0].image2_path,
-  };
+function setupImageZoom() {
+  const modal = document.getElementById("imgModal");
+  const modalImg = document.getElementById("imgModalContent");
+  const closeBtn = document.getElementById("imgModalClose");
 
-  const findings = rows.map(r => ({
-    finding_id: r.finding_id,
-    finding_name: r.finding_name,
-    answer_choice: r.answer_choice ?? null, // 1/2/3 or null
-  }));
-
-  res.json({ patient, findings });
-});
-
-/**
- * PUT /api/patients/:id/answers
- * body: { answers: [{ finding_id: number, answer_choice: 1|2|3 }, ...] }
- * bulk upsert
- */
-router.put("/patients/:id/answers", async (req, res) => {
-  const patientId = Number(req.params.id);
-  if (!Number.isFinite(patientId)) return res.status(400).json({ error: "Invalid patient id" });
-
-  const answers = req.body?.answers;
-if (!Array.isArray(answers)) {    return res.status(400).json({ error: "Expected answers array of length 14" });
+  function open(src) {
+    modalImg.src = src;
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
   }
 
-  // TODO: όταν κάνεις auth, πάρε updated_by από session/user
-  const updatedBy = null;
+  function close() {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    modalImg.src = "";
+    document.body.style.overflow = "";
+  }
 
-  // Validate
-  for (const a of answers) {
-    const fid = Number(a.finding_id);
-    const ch = Number(a.answer_choice);
-    if (!Number.isFinite(fid) || ![1, 2, 3].includes(ch)) {
-      return res.status(400).json({ error: "Invalid finding_id or answer_choice" });
+  document.getElementById("img1")?.addEventListener("click", (e) => open(e.target.src));
+  document.getElementById("img2")?.addEventListener("click", (e) => open(e.target.src));
+  closeBtn?.addEventListener("click", close);
+  modal?.addEventListener("click", (e) => { if (e.target === modal || e.target === modalImg) close(); });
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+}
+
+function render({ patient, findings }) {
+  document.getElementById("progressText").textContent = `Editing answers • 14 findings`;
+  document.getElementById("img1").src = patient.image1_path;
+  document.getElementById("img2").src = patient.image2_path;
+
+  const form = document.getElementById("form");
+  form.innerHTML = findings.map((f, idx) => {
+    const group = `finding_${f.finding_id}`;
+    const radios = ANSWERS.map(a => {
+      const checked = (f.answer_choice === a.value) ? "checked" : "";
+      return `
+        <label class="choice">
+          <input type="radio" name="${group}" value="${a.value}" ${checked} />
+          ${a.label}
+        </label>
+      `;
+    }).join("");
+
+    return `
+      <div class="qItem">
+        <h4>${idx + 1}. ${f.finding_name}</h4>
+        <div class="choices">${radios}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+/**
+ * Collects all answers from the form.
+ * For any finding with no radio selected, defaults to NEGATIVE (2).
+ */
+function collectAllAnswers() {
+  const answers = [];
+  for (const f of findingsData) {
+    const name = `finding_${f.finding_id}`;
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    answers.push({
+      finding_id: f.finding_id,
+      answer_choice: checked ? Number(checked.value) : 2, // default NEGATIVE
+    });
+  }
+  return answers;
+}
+
+function getPatientIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = Number(params.get("id"));
+  return Number.isFinite(id) ? id : null;
+}
+
+(async function boot() {
+  const patientId = getPatientIdFromUrl();
+  if (!patientId) return alert("Missing patient id.");
+
+  const data = await getJSON(`/api/patients/${patientId}/questionnaire?userId=${USER_ID}`);
+  findingsData = data.findings;
+  render(data);
+  setupImageZoom();
+
+  document.getElementById("backBtn")?.addEventListener("click", () => {
+    window.location.href = "/history_list.html";
+  });
+
+  // Save: always sends all 14 findings, defaults unchecked to NEGATIVE
+  document.getElementById("saveBtn")?.addEventListener("click", async () => {
+    try {
+      const answers = collectAllAnswers();
+      await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
+      alert("Saved ✅");
+    } catch (err) {
+      console.error("Save error:", err);
+      alert("Save failed ❌ — check console.");
     }
-  }
+  });
 
-  // Build bulk insert
-  const values = answers.map(a => [patientId, a.finding_id, a.answer_choice, updatedBy]);
-
-  await db.query(
-    `
-    INSERT INTO patient_answers (patient_id, finding_id, answer_choice, updated_by)
-    VALUES ${values.map(() => "(?, ?, ?, ?)").join(", ")}
-    ON DUPLICATE KEY UPDATE
-      answer_choice = VALUES(answer_choice),
-      updated_by = VALUES(updated_by),
-      updated_at = CURRENT_TIMESTAMP;
-    `,
-    values.flat()
-  );
-
-  res.json({ ok: true });
-});
-
-export default router;
+  document.getElementById("logoutBtn")?.addEventListener("click", () => {
+    Auth.logout();
+  });
+})();
