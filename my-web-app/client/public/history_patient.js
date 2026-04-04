@@ -1,12 +1,14 @@
 let findingsData = [];
-const LS_USER = "mr_user";
+
 const user = Auth.requireAuth();
 if (!user) throw new Error("Unauthorized");
 Auth.setupProfileMenu();
+
 const USER_ID = user.id;
+
 const ANSWERS = [
-  { label: "POSITIVE", value: 1 },
-  { label: "NEGATIVE", value: 2 },
+  { label: "POSITIVE",  value: 1 },
+  { label: "NEGATIVE",  value: 2 },
   { label: "UNCERTAIN", value: 3 },
 ];
 
@@ -18,7 +20,7 @@ function getPatientIdFromUrl() {
 
 async function getJSON(url) {
   const res = await fetch(url);
-  if (!res.ok) throw new Error("Request failed");
+  if (!res.ok) throw new Error("GET failed: " + url);
   return res.json();
 }
 
@@ -28,12 +30,13 @@ async function putJSON(url, body) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error("Request failed");
+  if (!res.ok) throw new Error("PUT failed: " + url);
   return res.json();
 }
 
+/* ── Image zoom ── */
 function setupImageZoom() {
-  const modal = document.getElementById("imgModal");
+  const modal    = document.getElementById("imgModal");
   const modalImg = document.getElementById("imgModalContent");
   const closeBtn = document.getElementById("imgModalClose");
 
@@ -51,34 +54,32 @@ function setupImageZoom() {
     document.body.style.overflow = "";
   }
 
-  const img1 = document.getElementById("img1");
-  const img2 = document.getElementById("img2");
-
-  img1?.addEventListener("click", () => open(img1.src));
-  img2?.addEventListener("click", () => open(img2.src));
-
+  document.getElementById("img1")?.addEventListener("click", (e) => open(e.target.src));
+  document.getElementById("img2")?.addEventListener("click", (e) => open(e.target.src));
   closeBtn?.addEventListener("click", close);
-  modal?.addEventListener("click", (e) => {
-    if (e.target === modal || e.target === modalImg) close();
-  });
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") close();
-  });
+  modal?.addEventListener("click", (e) => { if (e.target === modal || e.target === modalImg) close(); });
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 }
 
+/* ── Render form ──
+   FIX: coerce answer_choice to Number() before comparing,
+   because MySQL can return it as a string ("1","2","3").
+   Without this, checked="" for every radio → nothing pre-selected.
+*/
 function render({ patient, findings }) {
-  // do NOT display patient_code (anonymity)
-  document.getElementById("progressText").textContent = `Editing answers • 14 findings`;
-
+  document.getElementById("progressText").textContent = `Editing answers • ${findings.length} findings`;
   document.getElementById("img1").src = patient.image1_path;
   document.getElementById("img2").src = patient.image2_path;
 
   const form = document.getElementById("form");
   form.innerHTML = findings.map((f, idx) => {
     const group = `finding_${f.finding_id}`;
+
+    // ← KEY FIX: Number() so "2" === 2 comparison works
+    const savedValue = Number(f.answer_choice);
+
     const radios = ANSWERS.map(a => {
-      const checked = (f.answer_choice === a.value) ? "checked" : "";
+      const checked = (savedValue === a.value) ? "checked" : "";
       return `
         <label class="choice">
           <input type="radio" name="${group}" value="${a.value}" ${checked} />
@@ -96,55 +97,50 @@ function render({ patient, findings }) {
   }).join("");
 }
 
-function collectAnswers(findings) {
-  const answers = [];
-  for (const f of findings) {
-    const name = `finding_${f.finding_id}`;
+/* ── Collect answers ──
+   Always returns all findings.
+   Any finding without a selected radio defaults to NEGATIVE (2).
+*/
+function collectAllAnswers() {
+  return findingsData.map((f) => {
+    const name    = `finding_${f.finding_id}`;
     const checked = document.querySelector(`input[name="${name}"]:checked`);
-    if (!checked) return null;
-    answers.push({ finding_id: f.finding_id, answer_choice: Number(checked.value) });
-  }
-  return answers;
+    return {
+      finding_id:    f.finding_id,
+      answer_choice: checked ? Number(checked.value) : 2,
+    };
+  });
 }
 
+/* ── Boot ── */
 (async function boot() {
   const patientId = getPatientIdFromUrl();
   if (!patientId) return alert("Missing patient id.");
-  const data = await getJSON(`/api/patients/${patientId}/questionnaire?userId=${USER_ID}`);
-  findingsData = data.findings;
-  render(data);
-  setupImageZoom();
 
-  document.getElementById("backBtn").addEventListener("click", () => {
+  try {
+    const data = await getJSON(`/api/patients/${patientId}/questionnaire?userId=${USER_ID}`);
+    findingsData = data.findings;
+    render(data);
+    setupImageZoom();
+  } catch (err) {
+    console.error("Load error:", err);
+    return alert("Failed to load patient data ❌");
+  }
+
+  document.getElementById("backBtn")?.addEventListener("click", () => {
     window.location.href = "/history_list.html";
   });
 
-  document.getElementById("saveBtn").addEventListener("click", async () => {
-
-  const answers = [];
-
-  for (const f of findingsData) {
-    const name = `finding_${f.finding_id}`;
-    const checked = document.querySelector(`input[name="${name}"]:checked`);
-
-    if (checked) {
-      answers.push({
-        finding_id: f.finding_id,
-        answer_choice: Number(checked.value)
-      });
-    } else {
-      // 👉 AUTO NEGATIVE
-      answers.push({
-        finding_id: f.finding_id,
-        answer_choice: 2
-      });
+  document.getElementById("saveBtn")?.addEventListener("click", async () => {
+    try {
+      const answers = collectAllAnswers();
+      await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
+      alert("Saved ✅");
+    } catch (err) {
+      console.error("Save error:", err);
+      alert("Save failed ❌ — check console.");
     }
-  }
-
-  await putJSON(`/api/patients/${patientId}/answers?userId=${USER_ID}`, { answers });
-
-  alert("Saved ✅");
-});
+  });
 })();
 
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
