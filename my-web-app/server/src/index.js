@@ -257,56 +257,82 @@ app.get("/api/patients/:id/questionnaire", async (req, res) => {
 app.put("/api/patients/:id/answers", async (req, res) => {
   try {
     const patientId = Number(req.params.id);
-    const userId    = Number(req.query.userId);
+    const userId = Number(req.query.userId);
 
-    if (!Number.isFinite(patientId)) return res.status(400).json({ error: "Invalid patient id" });
-    if (!Number.isFinite(userId))    return res.status(400).json({ error: "userId required" });
+    if (!Number.isFinite(patientId)) {
+      return res.status(400).json({ error: "Invalid patient id" });
+    }
+
+    if (!Number.isFinite(userId)) {
+      return res.status(400).json({ error: "userId required" });
+    }
 
     const answers = req.body?.answers;
-    if (!Array.isArray(answers)) return res.status(400).json({ error: "Invalid answers payload" });
 
+    if (!Array.isArray(answers)) {
+      return res.status(400).json({ error: "Invalid answers payload" });
+    }
+
+    // 🔥 πάρε όλα τα findings
     const [findings] = await db.query("SELECT id FROM findings");
 
+    // 🔥 map answers που ήρθαν
     const answerMap = new Map(
-      answers.map(a => [Number(a.finding_id), Number(a.answer_choice)])
+      answers.map(a => [
+        Number(a.finding_id),
+        Number(a.answer_choice)
+      ])
     );
 
-    // Build full 14-row answer list; default to NEGATIVE for any gaps
+    // 🔥 FULL answers (auto-negative + validation)
     const fullAnswers = findings.map(f => {
-      const value = answerMap.get(f.id);
+      let value = Number(answerMap.get(f.id));
+
+      if (![1, 2, 3].includes(value)) {
+        value = 2; // default NEGATIVE
+      }
+
       return {
-        finding_id:    f.id,
-        answer_choice: [1, 2, 3].includes(value) ? value : 2,
+        finding_id: f.id,
+        answer_choice: value
       };
     });
 
+    // 🔥 πάρε user info
     const [users] = await db.query(
       "SELECT username, role FROM accounts WHERE id=?",
       [userId]
     );
-    if (!users.length) return res.status(400).json({ error: "User not found" });
+
+    if (!users.length) {
+      return res.status(400).json({ error: "User not found" });
+    }
 
     const user = users[0];
 
+    // 🔥 φτιάξε values για insert
     const values = fullAnswers.map(a => [
       userId,
       user.username,
       user.role,
       patientId,
       a.finding_id,
-      a.answer_choice,
+      a.answer_choice
     ]);
 
+    // 🔥 UPSERT (insert OR update)
     await db.query(
-      `INSERT INTO patient_answers (user_id, username, role, patient_id, finding_id, answer_choice)
-       VALUES ${values.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
-       ON DUPLICATE KEY UPDATE
-         answer_choice = VALUES(answer_choice),
-         updated_at    = CURRENT_TIMESTAMP`,
+      `INSERT INTO patient_answers 
+      (user_id, username, role, patient_id, finding_id, answer_choice)
+      VALUES ${values.map(() => "(?, ?, ?, ?, ?, ?)").join(", ")}
+      ON DUPLICATE KEY UPDATE
+        answer_choice = VALUES(answer_choice),
+        updated_at = CURRENT_TIMESTAMP`,
       values.flat()
     );
 
     res.json({ ok: true });
+
   } catch (err) {
     console.error("🔥 SAVE ERROR:", err);
     res.status(500).json({ error: err.message });
