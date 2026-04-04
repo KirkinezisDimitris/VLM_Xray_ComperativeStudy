@@ -121,8 +121,10 @@ function render({ patient, findings }) {
   form.innerHTML = findings
     .map((f, idx) => {
       const group = `finding_${f.finding_id}`;
-      const savedValue = Number(f.answer_choice);
-
+      const savedValue =
+        f.answer_choice === null || f.answer_choice === undefined
+          ? null
+          : Number(f.answer_choice);
       const radios = ANSWERS.map((a) => {
         const checked = savedValue === a.value ? "checked" : "";
         return `
