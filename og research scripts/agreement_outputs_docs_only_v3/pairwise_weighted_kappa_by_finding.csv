@@ -1,0 +1,226 @@
+scope,finding_id,finding,rater_a,rater_b,n_items,percent_agreement,quadratic_weighted_kappa
+overall_all_findings,,,chief_rad_01,rad_01,4200,80.78571428571428,0.4750177130912999
+overall_all_findings,,,chief_rad_01,rad_02,4200,86.88095238095238,0.5465874781958159
+overall_all_findings,,,chief_rad_01,rad_03,4200,80.97619047619048,0.5039063340722725
+overall_all_findings,,,chief_rad_01,rad_04,4200,77.66666666666666,0.4329346665795264
+overall_all_findings,,,chief_rad_01,rad_06,4200,85.23809523809524,0.5298527574295024
+overall_all_findings,,,rad_01,rad_02,4200,83.61904761904762,0.5069814235536312
+overall_all_findings,,,rad_01,rad_03,4200,78.64285714285715,0.5034643418951212
+overall_all_findings,,,rad_01,rad_04,4200,75.47619047619048,0.41687480518639364
+overall_all_findings,,,rad_01,rad_06,4200,81.64285714285714,0.4854660531206819
+overall_all_findings,,,rad_02,rad_03,4200,79.9047619047619,0.43218033772926
+overall_all_findings,,,rad_02,rad_04,4200,78.38095238095238,0.4035875662554209
+overall_all_findings,,,rad_02,rad_06,4200,87.28571428571429,0.5416575415323969
+overall_all_findings,,,rad_03,rad_04,4200,76.83333333333333,0.4845765519623776
+overall_all_findings,,,rad_03,rad_06,4200,80.88095238095238,0.5021529663561997
+overall_all_findings,,,rad_04,rad_06,4200,78.73809523809524,0.4550933575323819
+finding_No_Finding,1,No Finding,chief_rad_01,rad_01,300,80.66666666666666,0.53125
+finding_No_Finding,1,No Finding,chief_rad_01,rad_02,300,82.33333333333334,0.635058048210131
+finding_No_Finding,1,No Finding,chief_rad_01,rad_03,300,79.33333333333333,0.5255049368663472
+finding_No_Finding,1,No Finding,chief_rad_01,rad_04,300,66.66666666666666,0.4136030057235155
+finding_No_Finding,1,No Finding,chief_rad_01,rad_06,300,77.0,0.5104251350963608
+finding_No_Finding,1,No Finding,rad_01,rad_02,300,74.33333333333333,0.4390632663070133
+finding_No_Finding,1,No Finding,rad_01,rad_03,300,81.0,0.5322245322245323
+finding_No_Finding,1,No Finding,rad_01,rad_04,300,63.33333333333333,0.3325070821529744
+finding_No_Finding,1,No Finding,rad_01,rad_06,300,75.0,0.4476452905811623
+finding_No_Finding,1,No Finding,rad_02,rad_03,300,77.0,0.529639330081457
+finding_No_Finding,1,No Finding,rad_02,rad_04,300,69.33333333333334,0.47311490282284796
+finding_No_Finding,1,No Finding,rad_02,rad_06,300,78.0,0.5506404664615949
+finding_No_Finding,1,No Finding,rad_03,rad_04,300,66.66666666666666,0.42510436566900156
+finding_No_Finding,1,No Finding,rad_03,rad_06,300,75.66666666666667,0.4876549233922124
+finding_No_Finding,1,No Finding,rad_04,rad_06,300,71.66666666666667,0.5274794253033896
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,chief_rad_01,rad_01,300,73.0,0.23007246376811608
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,chief_rad_01,rad_02,300,77.33333333333333,0.10914702581369251
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,chief_rad_01,rad_03,300,71.0,0.39220183486238525
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,chief_rad_01,rad_04,300,73.66666666666667,0.43463189171343675
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,chief_rad_01,rad_06,300,78.66666666666666,0.3758071459319845
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_01,rad_02,300,80.66666666666666,0.0829556234847687
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_01,rad_03,300,68.0,0.29777436684574066
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_01,rad_04,300,66.33333333333333,0.21818384525335865
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_01,rad_06,300,79.33333333333333,0.309518374800274
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_02,rad_03,300,59.66666666666667,0.02835696413678057
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_02,rad_04,300,65.33333333333333,0.068952209429472
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_02,rad_06,300,85.33333333333334,0.18675851511672403
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_03,rad_04,300,75.33333333333333,0.5358187134502923
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_03,rad_06,300,69.33333333333334,0.3260188087774294
+finding_Enlarged_Cardiomediastinum,2,Enlarged Cardiomediastinum,rad_04,rad_06,300,71.66666666666667,0.3302799861735223
+finding_Cardiomegaly,3,Cardiomegaly,chief_rad_01,rad_01,300,81.0,0.6109713926438227
+finding_Cardiomegaly,3,Cardiomegaly,chief_rad_01,rad_02,300,82.66666666666667,0.6127516389162847
+finding_Cardiomegaly,3,Cardiomegaly,chief_rad_01,rad_03,300,78.33333333333333,0.5569386571021677
+finding_Cardiomegaly,3,Cardiomegaly,chief_rad_01,rad_04,300,81.33333333333333,0.6411105852658148
+finding_Cardiomegaly,3,Cardiomegaly,chief_rad_01,rad_06,300,79.66666666666666,0.5674983825142761
+finding_Cardiomegaly,3,Cardiomegaly,rad_01,rad_02,300,82.33333333333334,0.5699592126263522
+finding_Cardiomegaly,3,Cardiomegaly,rad_01,rad_03,300,81.33333333333333,0.6014666029013231
+finding_Cardiomegaly,3,Cardiomegaly,rad_01,rad_04,300,79.33333333333333,0.5912049531671695
+finding_Cardiomegaly,3,Cardiomegaly,rad_01,rad_06,300,80.33333333333333,0.5397328309642062
+finding_Cardiomegaly,3,Cardiomegaly,rad_02,rad_03,300,80.33333333333333,0.5253164556962026
+finding_Cardiomegaly,3,Cardiomegaly,rad_02,rad_04,300,79.66666666666666,0.5404736656062212
+finding_Cardiomegaly,3,Cardiomegaly,rad_02,rad_06,300,84.33333333333334,0.5703701162830583
+finding_Cardiomegaly,3,Cardiomegaly,rad_03,rad_04,300,82.33333333333334,0.6723145780051152
+finding_Cardiomegaly,3,Cardiomegaly,rad_03,rad_06,300,83.33333333333334,0.6392673022090378
+finding_Cardiomegaly,3,Cardiomegaly,rad_04,rad_06,300,81.33333333333333,0.604396544350355
+finding_Lung_Opacity,4,Lung Opacity,chief_rad_01,rad_01,300,73.0,0.4588285229202038
+finding_Lung_Opacity,4,Lung Opacity,chief_rad_01,rad_02,300,77.0,0.4217476072314782
+finding_Lung_Opacity,4,Lung Opacity,chief_rad_01,rad_03,300,73.66666666666667,0.44184231069476965
+finding_Lung_Opacity,4,Lung Opacity,chief_rad_01,rad_04,300,71.66666666666667,0.44247438928289984
+finding_Lung_Opacity,4,Lung Opacity,chief_rad_01,rad_06,300,80.33333333333333,0.5517097581317765
+finding_Lung_Opacity,4,Lung Opacity,rad_01,rad_02,300,69.66666666666667,0.3640728002292921
+finding_Lung_Opacity,4,Lung Opacity,rad_01,rad_03,300,72.33333333333334,0.4698033707865169
+finding_Lung_Opacity,4,Lung Opacity,rad_01,rad_04,300,67.66666666666666,0.41075243294564445
+finding_Lung_Opacity,4,Lung Opacity,rad_01,rad_06,300,70.0,0.38873139617292707
+finding_Lung_Opacity,4,Lung Opacity,rad_02,rad_03,300,71.0,0.3427518427518427
+finding_Lung_Opacity,4,Lung Opacity,rad_02,rad_04,300,72.0,0.41867656153370436
+finding_Lung_Opacity,4,Lung Opacity,rad_02,rad_06,300,79.66666666666666,0.4752318479981905
+finding_Lung_Opacity,4,Lung Opacity,rad_03,rad_04,300,70.0,0.4217557251908397
+finding_Lung_Opacity,4,Lung Opacity,rad_03,rad_06,300,75.33333333333333,0.4586614173228346
+finding_Lung_Opacity,4,Lung Opacity,rad_04,rad_06,300,73.0,0.4637537239324727
+finding_Lung_Lesion,5,Lung Lesion,chief_rad_01,rad_01,300,78.33333333333333,0.3621007553678701
+finding_Lung_Lesion,5,Lung Lesion,chief_rad_01,rad_02,300,83.0,0.37614120511259885
+finding_Lung_Lesion,5,Lung Lesion,chief_rad_01,rad_03,300,79.33333333333333,0.41465971635749443
+finding_Lung_Lesion,5,Lung Lesion,chief_rad_01,rad_04,300,75.66666666666667,0.44613976197741834
+finding_Lung_Lesion,5,Lung Lesion,chief_rad_01,rad_06,300,84.33333333333334,0.5697863036885535
+finding_Lung_Lesion,5,Lung Lesion,rad_01,rad_02,300,86.0,0.4730679156908665
+finding_Lung_Lesion,5,Lung Lesion,rad_01,rad_03,300,80.33333333333333,0.4562313973899107
+finding_Lung_Lesion,5,Lung Lesion,rad_01,rad_04,300,78.0,0.4212218649517685
+finding_Lung_Lesion,5,Lung Lesion,rad_01,rad_06,300,80.33333333333333,0.38710783473341337
+finding_Lung_Lesion,5,Lung Lesion,rad_02,rad_03,300,82.66666666666667,0.36787996665740474
+finding_Lung_Lesion,5,Lung Lesion,rad_02,rad_04,300,79.0,0.4736842105263158
+finding_Lung_Lesion,5,Lung Lesion,rad_02,rad_06,300,84.33333333333334,0.4242306947938843
+finding_Lung_Lesion,5,Lung Lesion,rad_03,rad_04,300,79.0,0.42150370081807553
+finding_Lung_Lesion,5,Lung Lesion,rad_03,rad_06,300,79.0,0.44533154046558543
+finding_Lung_Lesion,5,Lung Lesion,rad_04,rad_06,300,75.33333333333333,0.4239226033421284
+finding_Edema,6,Edema,chief_rad_01,rad_01,300,95.66666666666667,0.11604714415231188
+finding_Edema,6,Edema,chief_rad_01,rad_02,300,96.33333333333334,0.0
+finding_Edema,6,Edema,chief_rad_01,rad_03,300,87.0,0.16402917297371677
+finding_Edema,6,Edema,chief_rad_01,rad_04,300,78.66666666666666,0.11203572153440222
+finding_Edema,6,Edema,chief_rad_01,rad_06,300,95.0,-0.021856372409878144
+finding_Edema,6,Edema,rad_01,rad_02,300,98.66666666666667,0.0
+finding_Edema,6,Edema,rad_01,rad_03,300,88.0,0.09195733640818693
+finding_Edema,6,Edema,rad_01,rad_04,300,79.0,0.04674046740467408
+finding_Edema,6,Edema,rad_01,rad_06,300,98.0,0.10785091197462326
+finding_Edema,6,Edema,rad_02,rad_03,300,87.0,0.0
+finding_Edema,6,Edema,rad_02,rad_04,300,78.33333333333333,0.0
+finding_Edema,6,Edema,rad_02,rad_06,300,98.66666666666667,0.0
+finding_Edema,6,Edema,rad_03,rad_04,300,76.0,0.2859487852921865
+finding_Edema,6,Edema,rad_03,rad_06,300,88.33333333333333,0.2329658653207598
+finding_Edema,6,Edema,rad_04,rad_06,300,79.66666666666666,0.10378292731233907
+finding_Consolidation,7,Consolidation,chief_rad_01,rad_01,300,83.0,0.4158011869436202
+finding_Consolidation,7,Consolidation,chief_rad_01,rad_02,300,90.66666666666666,0.3563021088769005
+finding_Consolidation,7,Consolidation,chief_rad_01,rad_03,300,76.66666666666667,0.2867276166456494
+finding_Consolidation,7,Consolidation,chief_rad_01,rad_04,300,77.66666666666666,0.23478161183079216
+finding_Consolidation,7,Consolidation,chief_rad_01,rad_06,300,86.33333333333333,0.2651338766006984
+finding_Consolidation,7,Consolidation,rad_01,rad_02,300,84.0,0.39956725567976925
+finding_Consolidation,7,Consolidation,rad_01,rad_03,300,75.0,0.45436173795890866
+finding_Consolidation,7,Consolidation,rad_01,rad_04,300,74.66666666666667,0.4210277054226852
+finding_Consolidation,7,Consolidation,rad_01,rad_06,300,79.33333333333333,0.3239980685659103
+finding_Consolidation,7,Consolidation,rad_02,rad_03,300,76.66666666666667,0.27932788654231544
+finding_Consolidation,7,Consolidation,rad_02,rad_04,300,80.0,0.31963265763243365
+finding_Consolidation,7,Consolidation,rad_02,rad_06,300,89.66666666666666,0.4019138755980861
+finding_Consolidation,7,Consolidation,rad_03,rad_04,300,74.33333333333333,0.46194541300949865
+finding_Consolidation,7,Consolidation,rad_03,rad_06,300,77.66666666666666,0.3771275439994205
+finding_Consolidation,7,Consolidation,rad_04,rad_06,300,80.0,0.35777673984119573
+finding_Pneumonia,8,Pneumonia,chief_rad_01,rad_01,300,81.0,0.31362579895409637
+finding_Pneumonia,8,Pneumonia,chief_rad_01,rad_02,300,90.66666666666666,0.42493198120207765
+finding_Pneumonia,8,Pneumonia,chief_rad_01,rad_03,300,75.0,0.3370108956348934
+finding_Pneumonia,8,Pneumonia,chief_rad_01,rad_04,300,79.33333333333333,0.3696615356506645
+finding_Pneumonia,8,Pneumonia,chief_rad_01,rad_06,300,88.66666666666667,0.29111531190926276
+finding_Pneumonia,8,Pneumonia,rad_01,rad_02,300,84.66666666666667,0.2759004827330115
+finding_Pneumonia,8,Pneumonia,rad_01,rad_03,300,70.0,0.28551705094574076
+finding_Pneumonia,8,Pneumonia,rad_01,rad_04,300,75.0,0.38372503975967487
+finding_Pneumonia,8,Pneumonia,rad_01,rad_06,300,81.33333333333333,0.27017744705208924
+finding_Pneumonia,8,Pneumonia,rad_02,rad_03,300,72.66666666666667,0.20947149643705465
+finding_Pneumonia,8,Pneumonia,rad_02,rad_04,300,79.33333333333333,0.25866194984913127
+finding_Pneumonia,8,Pneumonia,rad_02,rad_06,300,91.0,0.34561318468250124
+finding_Pneumonia,8,Pneumonia,rad_03,rad_04,300,75.66666666666667,0.4544985968730313
+finding_Pneumonia,8,Pneumonia,rad_03,rad_06,300,75.0,0.29716148309113133
+finding_Pneumonia,8,Pneumonia,rad_04,rad_06,300,79.33333333333333,0.27460905721775297
+finding_Atelectasis,9,Atelectasis,chief_rad_01,rad_01,300,65.33333333333333,0.16993415698749714
+finding_Atelectasis,9,Atelectasis,chief_rad_01,rad_02,300,82.33333333333334,0.34730750541149447
+finding_Atelectasis,9,Atelectasis,chief_rad_01,rad_03,300,83.0,0.45061932497392987
+finding_Atelectasis,9,Atelectasis,chief_rad_01,rad_04,300,63.0,0.1130529047517369
+finding_Atelectasis,9,Atelectasis,chief_rad_01,rad_06,300,85.66666666666667,0.4451901565995525
+finding_Atelectasis,9,Atelectasis,rad_01,rad_02,300,73.33333333333333,0.39802766744281604
+finding_Atelectasis,9,Atelectasis,rad_01,rad_03,300,68.0,0.34834552168561295
+finding_Atelectasis,9,Atelectasis,rad_01,rad_04,300,64.66666666666666,0.3302252281830719
+finding_Atelectasis,9,Atelectasis,rad_01,rad_06,300,67.0,0.26748057713651496
+finding_Atelectasis,9,Atelectasis,rad_02,rad_03,300,78.66666666666666,0.4135790342226239
+finding_Atelectasis,9,Atelectasis,rad_02,rad_04,300,70.33333333333334,0.37368123866979697
+finding_Atelectasis,9,Atelectasis,rad_02,rad_06,300,79.0,0.315112540192926
+finding_Atelectasis,9,Atelectasis,rad_03,rad_04,300,64.0,0.22990381720515307
+finding_Atelectasis,9,Atelectasis,rad_03,rad_06,300,80.0,0.4495412844036697
+finding_Atelectasis,9,Atelectasis,rad_04,rad_06,300,63.66666666666667,0.18036809815950916
+finding_Pneumothorax,10,Pneumothorax,chief_rad_01,rad_01,300,96.66666666666667,0.4343891402714932
+finding_Pneumothorax,10,Pneumothorax,chief_rad_01,rad_02,300,98.0,0.5681381957773513
+finding_Pneumothorax,10,Pneumothorax,chief_rad_01,rad_03,300,97.0,0.43210499747602227
+finding_Pneumothorax,10,Pneumothorax,chief_rad_01,rad_04,300,96.66666666666667,0.2583436341161929
+finding_Pneumothorax,10,Pneumothorax,chief_rad_01,rad_06,300,97.66666666666667,0.4377811094452775
+finding_Pneumothorax,10,Pneumothorax,rad_01,rad_02,300,98.66666666666667,0.6644295302013423
+finding_Pneumothorax,10,Pneumothorax,rad_01,rad_03,300,96.66666666666667,0.470684039087948
+finding_Pneumothorax,10,Pneumothorax,rad_01,rad_04,300,97.0,0.08536585365853655
+finding_Pneumothorax,10,Pneumothorax,rad_01,rad_06,300,98.66666666666667,0.7474747474747474
+finding_Pneumothorax,10,Pneumothorax,rad_02,rad_03,300,97.66666666666667,0.3765984654731458
+finding_Pneumothorax,10,Pneumothorax,rad_02,rad_04,300,97.66666666666667,-0.006711409395973034
+finding_Pneumothorax,10,Pneumothorax,rad_02,rad_06,300,99.66666666666667,0.6651785714285714
+finding_Pneumothorax,10,Pneumothorax,rad_03,rad_04,300,96.33333333333334,0.19052088221492258
+finding_Pneumothorax,10,Pneumothorax,rad_03,rad_06,300,98.0,0.6357258499730167
+finding_Pneumothorax,10,Pneumothorax,rad_04,rad_06,300,97.66666666666667,0.19137466307277617
+finding_Pleural_Effusion,11,Pleural Effusion,chief_rad_01,rad_01,300,77.66666666666666,0.559492231906025
+finding_Pleural_Effusion,11,Pleural Effusion,chief_rad_01,rad_02,300,86.66666666666667,0.5829033367733059
+finding_Pleural_Effusion,11,Pleural Effusion,chief_rad_01,rad_03,300,79.66666666666666,0.5614821723222613
+finding_Pleural_Effusion,11,Pleural Effusion,chief_rad_01,rad_04,300,75.66666666666667,0.4934233913970849
+finding_Pleural_Effusion,11,Pleural Effusion,chief_rad_01,rad_06,300,86.0,0.6137513552584026
+finding_Pleural_Effusion,11,Pleural Effusion,rad_01,rad_02,300,80.66666666666666,0.6261177921677459
+finding_Pleural_Effusion,11,Pleural Effusion,rad_01,rad_03,300,78.0,0.6707943758475483
+finding_Pleural_Effusion,11,Pleural Effusion,rad_01,rad_04,300,73.66666666666667,0.5747696669029057
+finding_Pleural_Effusion,11,Pleural Effusion,rad_01,rad_06,300,80.66666666666666,0.6604595541129239
+finding_Pleural_Effusion,11,Pleural Effusion,rad_02,rad_03,300,77.0,0.47732254257292184
+finding_Pleural_Effusion,11,Pleural Effusion,rad_02,rad_04,300,74.66666666666667,0.39655172413793105
+finding_Pleural_Effusion,11,Pleural Effusion,rad_02,rad_06,300,88.0,0.6351172047766476
+finding_Pleural_Effusion,11,Pleural Effusion,rad_03,rad_04,300,77.66666666666666,0.6687480962534267
+finding_Pleural_Effusion,11,Pleural Effusion,rad_03,rad_06,300,81.66666666666667,0.6179278701798185
+finding_Pleural_Effusion,11,Pleural Effusion,rad_04,rad_06,300,78.66666666666666,0.5679839249832552
+finding_Pleural_Other,12,Pleural Other,chief_rad_01,rad_01,300,68.33333333333333,0.08997605200136849
+finding_Pleural_Other,12,Pleural Other,chief_rad_01,rad_02,300,90.33333333333333,0.05785562632696395
+finding_Pleural_Other,12,Pleural Other,chief_rad_01,rad_03,300,80.66666666666666,0.16029650220060232
+finding_Pleural_Other,12,Pleural Other,chief_rad_01,rad_04,300,79.33333333333333,0.177346726705923
+finding_Pleural_Other,12,Pleural Other,chief_rad_01,rad_06,300,82.0,0.09877800407331994
+finding_Pleural_Other,12,Pleural Other,rad_01,rad_02,300,69.66666666666667,0.15449566408032855
+finding_Pleural_Other,12,Pleural Other,rad_01,rad_03,300,65.0,0.16483735781281184
+finding_Pleural_Other,12,Pleural Other,rad_01,rad_04,300,67.0,0.21624066953178
+finding_Pleural_Other,12,Pleural Other,rad_01,rad_06,300,69.0,0.2668539325842697
+finding_Pleural_Other,12,Pleural Other,rad_02,rad_03,300,78.66666666666666,0.015717991759499506
+finding_Pleural_Other,12,Pleural Other,rad_02,rad_04,300,79.66666666666666,0.1033160387999098
+finding_Pleural_Other,12,Pleural Other,rad_02,rad_06,300,80.0,0.0625
+finding_Pleural_Other,12,Pleural Other,rad_03,rad_04,300,74.33333333333333,0.2555072069621974
+finding_Pleural_Other,12,Pleural Other,rad_03,rad_06,300,73.33333333333333,0.18413173652694603
+finding_Pleural_Other,12,Pleural Other,rad_04,rad_06,300,72.33333333333334,0.22445255474452552
+finding_Fracture,13,Fracture,chief_rad_01,rad_01,300,89.66666666666666,0.08190518584464723
+finding_Fracture,13,Fracture,chief_rad_01,rad_02,300,92.33333333333333,0.3633107839235973
+finding_Fracture,13,Fracture,chief_rad_01,rad_03,300,88.33333333333333,0.28195792880258896
+finding_Fracture,13,Fracture,chief_rad_01,rad_04,300,92.0,0.04778698642214785
+finding_Fracture,13,Fracture,chief_rad_01,rad_06,300,90.66666666666666,-0.018313861698768585
+finding_Fracture,13,Fracture,rad_01,rad_02,300,95.66666666666667,0.2257742257742259
+finding_Fracture,13,Fracture,rad_01,rad_03,300,89.33333333333333,0.19143356643356635
+finding_Fracture,13,Fracture,rad_01,rad_04,300,96.0,-0.00396628656420428
+finding_Fracture,13,Fracture,rad_01,rad_06,300,95.66666666666667,0.11317567567567566
+finding_Fracture,13,Fracture,rad_02,rad_03,300,91.33333333333333,0.2846750727449079
+finding_Fracture,13,Fracture,rad_02,rad_04,300,97.66666666666667,-0.0037641154328731385
+finding_Fracture,13,Fracture,rad_02,rad_06,300,97.0,-0.011560693641618602
+finding_Fracture,13,Fracture,rad_03,rad_04,300,91.0,0.024321266968325816
+finding_Fracture,13,Fracture,rad_03,rad_06,300,91.33333333333333,0.17200854700854695
+finding_Fracture,13,Fracture,rad_04,rad_06,300,98.66666666666667,-0.003824091778202643
+finding_Support_Devices,14,Support Devices,chief_rad_01,rad_01,300,87.66666666666667,0.7199232943076301
+finding_Support_Devices,14,Support Devices,chief_rad_01,rad_02,300,86.66666666666667,0.6999849992499625
+finding_Support_Devices,14,Support Devices,chief_rad_01,rad_03,300,84.66666666666667,0.6694953666398067
+finding_Support_Devices,14,Support Devices,chief_rad_01,rad_04,300,76.0,0.3461864960167168
+finding_Support_Devices,14,Support Devices,chief_rad_01,rad_06,300,81.33333333333333,0.5526918366260184
+finding_Support_Devices,14,Support Devices,rad_01,rad_02,300,92.33333333333333,0.8333011209895632
+finding_Support_Devices,14,Support Devices,rad_01,rad_03,300,88.0,0.7537874182331056
+finding_Support_Devices,14,Support Devices,rad_01,rad_04,300,75.0,0.39324963029547355
+finding_Support_Devices,14,Support Devices,rad_01,rad_06,300,88.33333333333333,0.7350625756964069
+finding_Support_Devices,14,Support Devices,rad_02,rad_03,300,88.33333333333333,0.7625205452963357
+finding_Support_Devices,14,Support Devices,rad_02,rad_04,300,74.33333333333333,0.3879378980891719
+finding_Support_Devices,14,Support Devices,rad_02,rad_06,300,87.33333333333333,0.7149857492874643
+finding_Support_Devices,14,Support Devices,rad_03,rad_04,300,73.0,0.3669159763993167
+finding_Support_Devices,14,Support Devices,rad_03,rad_06,300,84.33333333333334,0.661940975020145
+finding_Support_Devices,14,Support Devices,rad_04,rad_06,300,79.33333333333333,0.44413608462844456
