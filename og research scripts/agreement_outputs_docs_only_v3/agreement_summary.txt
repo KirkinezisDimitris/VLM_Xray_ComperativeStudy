@@ -1,0 +1,19 @@
+Radiologist Agreement Analysis - Doctors Only (v3)
+===================================================
+
+Role filter: doctor OR director
+No model predictions used. No radiologist used as ground truth.
+
+Doctors in analysis (6): chief_rad_01, rad_01, rad_02, rad_03, rad_04, rad_06
+Rows changed by No Finding rule: 134
+Complete patient-finding items:  4,200
+
+Overall agreement:
+  Fleiss kappa              : 0.4155
+  Fleiss level              : moderate
+  Mean pairwise QWK         : 0.4814
+  QWK level                 : moderate
+  Ordinal alpha             : 0.7393
+  Alpha level               : substantial
+  Exact agreement (%)       : 60.0238
+  Mean pairwise agree. (%)  : 80.8635
